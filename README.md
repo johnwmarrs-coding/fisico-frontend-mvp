@@ -27,4 +27,5 @@ every time new modules are added to the repo.
 
 ### Documentation
 https://reactnavigation.org/
+
 https://github.com/oblador/react-native-vector-icons
