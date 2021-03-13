@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HomeScreen = () => {
+const AnalyticsScreen = () => {
   return (
     <View
       style={{
@@ -10,9 +10,9 @@ const HomeScreen = () => {
         justifyContent: "center",
         alignItems: "center"
       }}>
-      <Text>Home Screen</Text>
-      <Ionicons name="home" size={30} color="#900" />
+      <Text>Analytics Screen</Text>
+      <Ionicons name="analytics" size={30} color="#900" />
     </View>
   )
 }
-export default HomeScreen;
+export default AnalyticsScreen;
