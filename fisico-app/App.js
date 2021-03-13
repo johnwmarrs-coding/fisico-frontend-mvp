@@ -9,6 +9,7 @@ import  Account  from './drawers/account/accountDrawer';
 import  Diet  from './drawers/diet/dietDrawer';
 import  Health  from './drawers/health/healthDrawer';
 import  Social  from './drawers/social/socialDrawer';
+import  Settings  from './drawers/settings/settingsDrawer';
 
 const styles = StyleSheet.create(
   {
@@ -29,13 +30,17 @@ export default function App() {
         <NavigationContainer>
           <Drawer.Navigator initialRouteName="Activity">
             <Drawer.Screen name="Activity" component={Activity} />
-            <Drawer.Screen name="Diet" component={Diet} />
-            <Drawer.Screen name="Health" component={Health} />
-            <Drawer.Screen name="Social" component={Social} />
-            <Drawer.Screen name="Account" component={Account} />
+            <Drawer.Screen name="Settings" component={Settings} />
           </Drawer.Navigator>
         </NavigationContainer>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
+
+/* Drawer to be added later.
+<Drawer.Screen name="Diet" component={Diet} />
+<Drawer.Screen name="Health" component={Health} />
+<Drawer.Screen name="Social" component={Social} />
+<Drawer.Screen name="Account" component={Account} />
+*/
