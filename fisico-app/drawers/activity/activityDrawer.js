@@ -1,15 +1,19 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeTab from './tabs/homeTab'
 import CalendarTab from './tabs/calendarTab'
 import AnalyticsTab from './tabs/analyticsTab'
+import {DarkModeColors, LightModeColors} from '../../styles/colors';
+import ThemeContext from '../../contexts/themeContext';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
 const Activity = () => {
+  const themeContext = useContext(ThemeContext);
   return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -30,8 +34,11 @@ const Activity = () => {
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
+          activeTintColor: themeContext.darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
+          inactiveTintColor: themeContext.darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+          style: {
+            backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+          }
         }}
       >
           <Tab.Screen name="Home" component={HomeTab}/>

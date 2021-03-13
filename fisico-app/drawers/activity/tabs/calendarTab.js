@@ -11,7 +11,7 @@ const CalendarTab = ( {navigation}) => {
     <Stack.Navigator>
       <Stack.Screen name="Activity/Calendar" component={CalendarScreen} options={
           {
-            header: () => <Header toggleDrawer={navigation.toggleDrawer} title="Calendar"/>,
+            header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Calendar"/>
           }
         }
       />

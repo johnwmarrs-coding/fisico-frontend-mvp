@@ -10,7 +10,7 @@ const HomeTab = ( {navigation}) => {
     <Stack.Navigator header={Header}>
       <Stack.Screen name="Activity/Home" component={HomeScreen} options={
         {
-          header: () => <Header toggleDrawer={navigation.toggleDrawer} title="Activities"/>,
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Activity"/>
         }
       }/>
     </Stack.Navigator>

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -10,7 +10,10 @@ import  Diet  from './drawers/diet/dietDrawer';
 import  Health  from './drawers/health/healthDrawer';
 import  Social  from './drawers/social/socialDrawer';
 import  Settings  from './drawers/settings/settingsDrawer';
+import ThemeContext from './contexts/themeContext';
+import {DarkModeColors, LightModeColors} from './styles/colors';
 
+const Drawer = createDrawerNavigator();
 const styles = StyleSheet.create(
   {
     container: {
@@ -19,24 +22,43 @@ const styles = StyleSheet.create(
     },
   }
 )
+const App = () => {
+  const [darkMode, setDarkMode] = useState(false);
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  }
 
-const Drawer = createDrawerNavigator();
-
-export default function App() {
+  const themeData = {
+    darkMode: darkMode,
+    toggleDarkMode: toggleDarkMode,
+  }
   return (
-    <SafeAreaProvider style={styles.container}>
-      <SafeAreaView style={ styles.container }>
-        <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Activity">
-            <Drawer.Screen name="Activity" component={Activity} />
-            <Drawer.Screen name="Settings" component={Settings} />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <ThemeContext.Provider value={themeData}>
+      <SafeAreaProvider style={styles.container}>
+        <SafeAreaView style={ styles.container }>
+          <NavigationContainer>
+            <Drawer.Navigator initialRouteName="Activity" 
+              drawerStyle={{
+                backgroundColor: darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+
+              }}
+              drawerContentOptions={{
+                activeTintColor: darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
+                inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+              }}
+            >
+              <Drawer.Screen name="Activity" component={Activity} />
+              <Drawer.Screen name="Settings" component={Settings} />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </ThemeContext.Provider>
   );
 }
+
+export default App;
 
 /* Drawer to be added later.
 <Drawer.Screen name="Diet" component={Diet} />
