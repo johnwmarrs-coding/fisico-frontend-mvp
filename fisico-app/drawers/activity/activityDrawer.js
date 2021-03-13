@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeTab from './tabs/homeTab'
 import CalendarTab from './tabs/calendarTab'
+import AnalyticsTab from './tabs/analyticsTab'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -20,6 +21,8 @@ const Activity = () => {
                 ? 'home' : 'home-outline';
             } else if (route.name === 'Calendar') {
               iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (route.name === 'Analytics') {
+              iconName = focused ? 'analytics' : 'analytics-outline';
             }
 
             // You can return any component that you like here!
@@ -33,6 +36,7 @@ const Activity = () => {
       >
           <Tab.Screen name="Home" component={HomeTab}/>
           <Tab.Screen name="Calendar" component={CalendarTab}/>
+          <Tab.Screen name="Analytics" component={AnalyticsTab}/>
       </Tab.Navigator>
   )
 }
