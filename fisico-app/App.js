@@ -48,6 +48,7 @@ const App = () => {
                 inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
               }}
             >
+              <Drawer.Screen name="Account" component={Account} />
               <Drawer.Screen name="Activity" component={Activity} />
               <Drawer.Screen name="Settings" component={Settings} />
             </Drawer.Navigator>
