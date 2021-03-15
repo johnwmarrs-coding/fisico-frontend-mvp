@@ -1,16 +1,25 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SigninScreen from './screens/signinScreen';
+import SignupScreen from './screens/signupScreen';
+import Header from '../../shared/header';
 
-const Account = () => {
+const Stack = createStackNavigator();
+const HomeTab = ( {navigation}) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <Text>Account</Text>
-    </View>
+    <Stack.Navigator header={Header}>
+      <Stack.Screen name="Signin" component={SigninScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Sign In"/>
+        }
+      }/>
+      <Stack.Screen name="Signup" component={SignupScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Sign Up"/>
+        }
+      }/>
+    </Stack.Navigator>
   )
 }
-export default Account;
+export default HomeTab;
