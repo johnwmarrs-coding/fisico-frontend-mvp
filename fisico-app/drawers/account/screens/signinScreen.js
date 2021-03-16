@@ -1,37 +1,42 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import {DarkModeColors, LightModeColors} from '../../../styles/colors';
 import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { TextInput, Title, Text, Button } from 'react-native-paper';
 
 
 
-const SigninScreen = () => {
+const SigninScreen = ( {navigation} ) => {
   const themeContext = useContext(ThemeContext);
   const [text, setText] = useState('');
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
-      <Text style={themeContext.darkMode ? stylesDark.label : styles.label }>Email</Text>
+      <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Welcome!</Title>
+      <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>
+        Sign in to use social features and save your data in the cloud.
+      </Text>
       <TextInput
-        style={{height: 40, backgroundColor: '#222222', padding: 10}}
-        placeholder="Type here to translate!"
+        style={themeContext.darkMode ? stylesDark.field : styles.field}
+        label='Email'
         onChangeText={text => setText(text)}
-        defaultValue={text}
+        value={text}
+        mode='outlined'
       />
-      <Text style={themeContext.darkMode ? stylesDark.label : styles.label }>Password</Text>
       <TextInput
-        style={{height: 40, backgroundColor: '#222222', padding: 10}}
-        placeholder="Type here to translate!"
+        style={themeContext.darkMode ? stylesDark.field : styles.field}
+        label='Password'
         onChangeText={text => setText(text)}
-        defaultValue={text}
+        value={text}
         secureTextEntry={true}
+        mode='outlined'
       />
-      <Button onPress={() => setText('PRESSED')} 
-        title="Submit"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
+      <Button onPress={() => setText('PRESSED')} mode='contained'>Sign in</Button>
+      <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
+        <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>New User?</Text>
+        <Button mode='text' onPress={() => navigation.navigate('Signup')}>Sign Up</Button>
+      </View>
     </View>
   )
 }
@@ -41,11 +46,22 @@ const stylesDark = StyleSheet.create({
       flex: 1,
       padding: 24,
       backgroundColor: DarkModeColors.ContentBackground,
+      justifyContent: 'flex-start',
     },
     label: {
       color: DarkModeColors.ContentForeground,
-      fontSize: 20,
-      fontWeight: "bold"
+      fontSize: 32,
+      fontWeight: "bold",
+      textAlign: 'center'
+    },
+    paragraph: {
+      color: DarkModeColors.ContentForeground,
+      fontSize: 14,
+      textAlign: 'center'
+    },
+    field: {
+      padding: 5,
+      height:40
     }
   });
   
@@ -54,11 +70,22 @@ const stylesDark = StyleSheet.create({
       flex: 1,
       padding: 24,
       backgroundColor: LightModeColors.ContentBackground,
+      justifyContent: 'flex-start',
     },
     label: {
       color: LightModeColors.ContentForeground,
-      fontSize: 20,
-      fontWeight: "bold"
+      fontSize: 32,
+      fontWeight: "bold",
+      textAlign: 'center'
+    },
+    paragraph: {
+      color: LightModeColors.ContentForeground,
+      fontSize: 14,
+      textAlign: 'center'
+    },
+    field: {
+      padding: 5,
+      height:40
     }
   });
 export default SigninScreen;
