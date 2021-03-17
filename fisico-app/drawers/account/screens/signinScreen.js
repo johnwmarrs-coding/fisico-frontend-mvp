@@ -5,34 +5,37 @@ import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TextInput, Title, Text, Button } from 'react-native-paper';
+import { validateEmail } from '../../../utils/accountValidation';
 
 
 
 const SigninScreen = ( {navigation} ) => {
   const themeContext = useContext(ThemeContext);
-  const [text, setText] = useState('');
+  const [emailText, setEmailText] = useState('');
+  const [passwordText, setPasswordText] = useState('');
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
       <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Welcome!</Title>
       <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>
         Sign in to use social features and save your data in the cloud.
       </Text>
+      {emailText != '' && !validateEmail(emailText) ? <Text>Invalid Email Address</Text>: null}
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
         label='Email'
-        onChangeText={text => setText(text)}
-        value={text}
+        onChangeText={text => setEmailText(text)}
+        value={emailText}
         mode='outlined'
       />
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
         label='Password'
-        onChangeText={text => setText(text)}
-        value={text}
+        onChangeText={text => setPasswordText(text)}
+        value={passwordText}
         secureTextEntry={true}
         mode='outlined'
       />
-      <Button onPress={() => setText('PRESSED')} mode='contained'>Sign in</Button>
+      <Button onPress={() => console.log('Button Pressed')} mode='contained'>Sign in</Button>
       <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
         <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>New User?</Text>
         <Button mode='text' onPress={() => navigation.navigate('Signup')}>Sign Up</Button>
