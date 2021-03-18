@@ -17,6 +17,7 @@ export const LightModeColors = {
     MenuForegroundFocused: '#FFFFFF',
     ContentBackground: '#FFFFFF',
     ContentForeground: '#000000',
+    CardForeground: '#000000',
     CompletedBackground: '#FF7070',
     PlannedBackground: '#93FF85'
 };
