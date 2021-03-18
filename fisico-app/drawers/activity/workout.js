@@ -1,55 +1,85 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { Avatar, Button, Card } from 'react-native-paper';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+const WorkoutType = {
+  RUN: "Run",
+  WALK: "Walk",
+  BIKE: "Bike",
+  SWIM: "Swim",
+  LIFT: "Lift",
+  REST: "Rest",
+  OTHER: "Custom"
+}
 
 const Workout = () => {
   const themeContext = useContext(ThemeContext);
   return (
-    <Card style={themeContext.darkMode ? stylesDark.container : styles.container}>
-      <Card.Title title="Your Workout" subtitle="Card Subtitle" left={LeftContent} />
-      <Card.Content>
-        <Title>Card title</Title>
-        <Paragraph>Card content</Paragraph>
-      </Card.Content>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-      <Card.Actions>
-        <Button>Details</Button>
-      </Card.Actions>
-    </Card>
+    <View style={themeContext.darkMode ? darkStyles.layout : styles.layout}>
+      <Card style={themeContext.darkMode ? darkStyles.container : styles.container}>
+        <Card.Title 
+          titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
+          subtitleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
+          title={WorkoutType.RUN}
+          subtitle="A Workout Designed by You"
+          left={LeftContent}
+        />
+        {/* <Card.Content>
+          <Title>Card title</Title>
+          <Paragraph>Card content</Paragraph>
+        </Card.Content> */}
+        <Card.Actions style={themeContext.darkMode ? darkStyles.details : styles.details}>
+          <Button>Details</Button>
+        </Card.Actions>
+      </Card>
+    </View>
   )
 }
 
-const stylesDark = StyleSheet.create({
-  container: {
+const darkStyles = StyleSheet.create({
+  layout: {
     flex: 1,
-    padding: 24,
-    backgroundColor: DarkModeColors.ContentBackground
+    margin: "auto",
+    paddingVertical: 5,
+    height: 160,
+    minWidth: "40%"
+  },
+  container: {
+    flexGrow: 1,
+    backgroundColor: DarkModeColors.CardBackground
   },
   label: {
-    color: DarkModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
+    color: DarkModeColors.CardForeground
+  },
+  details: {
+    flex: 1
   }
-});
+}
+);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: LightModeColors.ContentBackground
-  },
-  label: {
-    color: LightModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
+    layout: {
+      flex: 1,
+      margin: "auto",
+      paddingVertical: 5,
+      height: 160,
+      minWidth: "40%"
+    },
+    container: {
+      flex: 1,
+      backgroundColor: LightModeColors.CardBackground
+    },
+    label: {
+      color: LightModeColors.CardForeground
+    },
+    details: {
+      flex: 1,
+    }
   }
-});
+);
 
 export default Workout;

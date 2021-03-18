@@ -6,7 +6,8 @@ export const DarkModeColors = {
     MenuForegroundFocused: '#FF7070',
     ContentBackground: '#454545',
     ContentForeground: '#FFFFFF',
-    CardForeground: '#000000',
+    CardBackground: '#454545',
+    CardForeground: '#FFFFFF',
     CompletedBackground: '#FF7070',
     PlannedBackground: '#93FF85'
 };
@@ -17,7 +18,8 @@ export const LightModeColors = {
     MenuForegroundFocused: '#FFFFFF',
     ContentBackground: '#FFFFFF',
     ContentForeground: '#000000',
-    CardForeground: '#000000',
+    CardBackground: '#4285F4',
+    CardForeground: '#FFFFFF',
     CompletedBackground: '#FF7070',
     PlannedBackground: '#93FF85'
 };

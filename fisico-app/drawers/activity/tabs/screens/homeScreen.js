@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
 import ThemeContext from '../../../../contexts/themeContext';
@@ -8,9 +8,16 @@ import ThemeContext from '../../../../contexts/themeContext';
 const HomeScreen = () => {
   const themeContext = useContext(ThemeContext);
   return (
-    <View style={themeContext.darkMode ? stylesDark.container : styles.container}>
+    <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
       <Workout/>
-    </View>
+      <Workout/>
+      <Workout/>
+      <Workout/>
+      <Workout/>
+      <Workout/>
+      <Workout/>
+      <Workout/>
+    </ScrollView>
   )
 }
 
