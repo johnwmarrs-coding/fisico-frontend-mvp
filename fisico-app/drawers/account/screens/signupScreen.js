@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, StyleSheet, TextInput} from 'react-native';
 import {DarkModeColors, LightModeColors} from '../../../styles/colors';
 import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TextInput, Title, Text, Button } from 'react-native-paper';
+import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, validatePassword} from '../../../utils/accountValidation';
 
 
@@ -22,93 +22,132 @@ const SignupScreen = ( {navigation} ) => {
       <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>
         Signing up lets you use social features, and save your data to the cloud!.
       </Text>
-      {emailText != '' && !validateEmail(emailText) ? <Text>Invalid Email Address</Text>: null}
+      {
+        emailText != '' && !validateEmail(emailText) 
+        ? <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+            Invalid Email Address
+          </Text>
+        : null
+      }
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
-        label='Email'
+        placeholder='Email'
         onChangeText={text => setEmailText(text)}
         value={emailText}
-        mode='outlined'
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
       
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
-        label='Display Name'
+        placeholder='Display Name'
         onChangeText={text => setDisplayNameText(text)}
         value={displayNameText}
-        mode='outlined'
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
-      {passwordText != '' && !validatePassword(passwordText) ? <Text>Password must be at least 6 characters long, and must contain a number, lowercase, and capital letter.</Text>: null}
+      {
+        passwordText != '' && !validatePassword(passwordText) 
+        ? <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+            Password must be at least 6 characters long, and must contain a number, lowercase, and capital letter.
+          </Text>
+        : null
+      }
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
-        label='Password'
+        placeholder='Password'
         onChangeText={text => setPasswordText(text)}
         value={passwordText}
         secureTextEntry={true}
-        mode='outlined'
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
+      {
+        verifyPasswordText != '' && passwordText != verifyPasswordText
+        ? <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+            Passwords must match!
+          </Text>
+        : null
+      }
       <TextInput
         style={themeContext.darkMode ? stylesDark.field : styles.field}
-        label='Verify Password'
+        placeholder='Verify Password'
         onChangeText={text => setVerifyPasswordText(text)}
         value={verifyPasswordText}
         secureTextEntry={true}
-        mode='outlined'
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
-      <Button onPress={() => console.log('Submit Pressed')} mode='contained'>Sign Up</Button>
+      <Button style={{marginTop: 5, marginBottom: 5}} onPress={() => console.log('Submit Pressed')} mode='contained'>Sign Up</Button>
       <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
         <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>Already a User?</Text>
-        <Button mode='text' onPress={() => navigation.navigate('Signin')}>Sign In</Button>
+        <Button 
+        mode='text' onPress={() => navigation.navigate('Signin')}
+        color={themeContext.darkMode ? DarkModeColors.Link : LightModeColors.Link}>
+          Sign In
+        </Button>
       </View>
     </View>
   )
 }
 
-const stylesDark = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 24,
-      backgroundColor: DarkModeColors.ContentBackground,
-      justifyContent: 'flex-start',
-    },
-    label: {
-      color: DarkModeColors.ContentForeground,
-      fontSize: 32,
-      fontWeight: "bold",
-      textAlign: 'center'
-    },
-    paragraph: {
-      color: DarkModeColors.ContentForeground,
-      fontSize: 14,
-      textAlign: 'center'
-    }, 
-    field: {
-      padding: 5,
-      height:40
-    }
-  });
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 24,
-      backgroundColor: LightModeColors.ContentBackground,
-      justifyContent: 'flex-start',
-    },
-    label: {
-      color: LightModeColors.ContentForeground,
-      fontSize: 32,
-      fontWeight: "bold",
-      textAlign: 'center'
-    },
-    paragraph: {
-      color: LightModeColors.ContentForeground,
-      fontSize: 14,
-      textAlign: 'center'
-    },
-    field: {
-      padding: 5,
-      height:40
-    }
-  });
+const stylesDark = {
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: DarkModeColors.ContentBackground,
+    justifyContent: 'flex-start',
+  },
+  label: {
+    color: DarkModeColors.ContentForeground,
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: 'center'
+  },
+  paragraph: {
+    color: DarkModeColors.ContentForeground,
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  field: {
+    padding: 5,
+    height:40,
+    marginBottom: 5,
+    marginTop: 5,
+    backgroundColor: DarkModeColors.FieldBackground,
+    color: DarkModeColors.FieldForeground,
+  },
+  warning: {
+    color: DarkModeColors.Warning,
+    fontSize: 14
+  }
+};
+
+const styles = {
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: LightModeColors.ContentBackground,
+    justifyContent: 'flex-start',
+  },
+  label: {
+    color: LightModeColors.ContentForeground,
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: 'center'
+  },
+  paragraph: {
+    color: LightModeColors.ContentForeground,
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  field: {
+    padding: 5,
+    height:40,
+    marginBottom: 5,
+    marginTop: 5,
+    backgroundColor: LightModeColors.FieldBackground,
+    color: LightModeColors.FieldForeground,
+  },
+  warning: {
+    color: LightModeColors.Warning,
+    fontSize: 14
+  }
+};
 export default SignupScreen;

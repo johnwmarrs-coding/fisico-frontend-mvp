@@ -8,7 +8,14 @@ export const DarkModeColors = {
     ContentForeground: '#FFFFFF',
     CardForeground: '#000000',
     CompletedBackground: '#FF7070',
-    PlannedBackground: '#93FF85'
+    PlannedBackground: '#93FF85',
+    FieldBackground: '#555555',
+    FieldForeground: '#FFFFFF',
+    FieldBorder: '#FF7070',
+    FieldPlaceholder: '#CDCDCD',
+    Warning: '#FF1122',
+    Success: '#11FF22',
+    Link:  '#6bd8ff'
 };
 
 export const LightModeColors = {
@@ -18,5 +25,12 @@ export const LightModeColors = {
     ContentBackground: '#FFFFFF',
     ContentForeground: '#000000',
     CompletedBackground: '#FF7070',
-    PlannedBackground: '#93FF85'
+    PlannedBackground: '#93FF85',
+    FieldBackground: '#DDDDDD',
+    FieldForeground: '#000000',
+    FieldBorder: '#4285F4',
+    FieldPlaceholder: '#333333',
+    Warning: '#FF1122',
+    Success: '#11FF22',
+    Link: '#4400FF'
 };
