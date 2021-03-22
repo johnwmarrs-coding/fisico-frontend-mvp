@@ -11,8 +11,7 @@ const HomeScreen = () => {
   useEffect(() => {
     fetch('http://localhost:3000/workout/604ec6262586462a620c3a92')
     .then((response) => response.json())
-    .then((json) => {
-      console.log("hello");      
+    .then((json) => {  
       return setWorkouts(json.workout);
     })
     .catch((error) => {
@@ -22,11 +21,8 @@ const HomeScreen = () => {
 
   return (
     <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
-      {/*
-      { workouts }   
-      */}
       {workouts.map((workoutObject, index) => (
-        <Text key={index}>{ JSON.stringify(workoutObject) }</Text>
+        <Workout key={index} info={workoutObject}>{ JSON.stringify(workoutObject) }</Workout>
       ))}
     </ScrollView>
   )
