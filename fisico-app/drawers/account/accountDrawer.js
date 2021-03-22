@@ -11,12 +11,12 @@ const HomeTab = ( {navigation}) => {
     <Stack.Navigator header={Header}>
       <Stack.Screen name="Signin" component={SigninScreen} options={
         {
-          header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Sign In"/>
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Signin')} title="Sign In"/>
         }
       }/>
       <Stack.Screen name="Signup" component={SignupScreen} options={
         {
-          header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Sign Up"/>
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Signin')} title="Sign Up"/>
         }
       }/>
     </Stack.Navigator>

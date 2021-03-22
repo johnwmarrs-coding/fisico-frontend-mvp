@@ -12,7 +12,7 @@ const AnalyticsTab = ({navigation}) => {
     <Stack.Navigator>
       <Stack.Screen name="Activity/Analytics" component={AnalyticsScreen} options={
           {
-            header:  () => <Header toggleDrawer={navigation.toggleDrawer} title="Analytics"/>
+            header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Analytics"/>
           }
         }
       />
