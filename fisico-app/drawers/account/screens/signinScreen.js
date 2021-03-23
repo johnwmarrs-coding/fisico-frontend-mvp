@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput} from 'react-native';
+import { View, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
 import {DarkModeColors, LightModeColors} from '../../../styles/colors';
 import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
@@ -16,8 +16,11 @@ const SigninScreen = ( {navigation} ) => {
 
   const [emailText, setEmailText] = useState('');
   const [passwordText, setPasswordText] = useState('');
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
 
   const sendSigninRequest = async () => {
+    setIsWorking(true);
     try {
       let response = await fetch('http://localhost:3000/user/login', {
         method: 'POST',
@@ -42,13 +45,17 @@ const SigninScreen = ( {navigation} ) => {
       }else {
         console.log("FAILURE");
         console.log(JSON.stringify(json));
+        setLoginFailed(true);
       }
       
     } catch (error) {
       console.error(error);
+      setLoginFailed(true);
     }
+    setIsWorking(false);
   }
 
+    
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
       <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Welcome!</Title>
@@ -77,12 +84,22 @@ const SigninScreen = ( {navigation} ) => {
         secureTextEntry={true}
         placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
+
+      {isWorking ? <ActivityIndicator/> :
       <Button disabled={!validateEmail(emailText)}
        style={themeContext.darkMode ? stylesDark.button : styles.button} 
        labelStyle={{color: themeContext.darkMode ? DarkModeColors.ContentForeground : DarkModeColors.ContentForeground}}
        onPress={sendSigninRequest} mode='contained'>
          Sign in
       </Button>
+      }
+      {
+        loginFailed ? 
+        <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+          Login Failed
+        </Text>
+        : null
+      }
       <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
         <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>New User?</Text>
         <Button 
@@ -128,7 +145,8 @@ const stylesDark = {
     },
     warning: {
       color: DarkModeColors.Warning,
-      fontSize: 14
+      fontSize: 14,
+      textAlign: 'center'
     },
     button: {
       marginTop: 5,
@@ -168,7 +186,8 @@ const stylesDark = {
     },
     warning: {
       color: LightModeColors.Warning,
-      fontSize: 14
+      fontSize: 14,
+      textAlign: 'center'
     },
     button: {
       marginTop: 5,

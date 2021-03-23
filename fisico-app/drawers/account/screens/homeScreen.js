@@ -48,7 +48,6 @@ const HomeScreen = ( {navigation} ) => {
 
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
-      <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Account</Title>
 
       <Button
         mode="contained"
