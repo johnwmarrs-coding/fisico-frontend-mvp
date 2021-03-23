@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
-import { Avatar, Button, Card } from 'react-native-paper';
+import { Avatar, TouchableRipple, Card, Modal, Portal, Provider } from 'react-native-paper';
 
 function chooseIcon(type) {
   if (type == "Distance")
@@ -15,11 +15,11 @@ function chooseIcon(type) {
 }
 
 const Workout = (props) => {
+  // Icon
   const [workoutIcon, setWorkoutIcon] = useState("");  
   useEffect(() => {
     setWorkoutIcon(chooseIcon(props.info.workout_type));
   }, []);
-  
   const themeContext = useContext(ThemeContext);
   const Icon = iconProps =>
   <Avatar.Icon
@@ -29,25 +29,46 @@ const Workout = (props) => {
     size="83"
   />
 
+  // Modal
+  const [visible, setVisible] = React.useState(false);
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   return (
-    <View style={themeContext.darkMode ? darkStyles.layout : styles.layout}>
-      <Card style={themeContext.darkMode ? darkStyles.container : styles.container}>
-        <Card.Title 
-          titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
-          subtitleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
-          title={props.info.name}
-          subtitle={props.info.workout_type}
-          left={Icon}
-        />
-        {/* <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content> */}
-        <Card.Actions style={themeContext.darkMode ? darkStyles.details : styles.details}>
-          <Button>Details</Button>
-        </Card.Actions>
-      </Card>
-    </View>
+    <Provider>
+      <View style={themeContext.darkMode ? darkStyles.layout : styles.layout}>
+        <TouchableRipple>
+          <Card
+            style={themeContext.darkMode ? darkStyles.container : styles.container}
+            elevation={5}
+            onPress={showModal}
+          >
+            <Card.Title 
+              titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
+              subtitleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
+              title={props.info.name}
+              subtitle={props.info.workout_type}
+              left={Icon}
+            />
+            {/* <Card.Content>
+              <Title>Card title</Title>
+              <Paragraph>Card content</Paragraph>
+            </Card.Content> */}
+          </Card>
+        </TouchableRipple>
+      </View>
+      <Portal>
+          <Modal
+            visible={visible}
+            onDismiss={hideModal}
+            contentContainerStyle={themeContext.darkMode ? darkStyles.modal : styles.modal}
+          >
+            <Text>
+              {JSON.stringify(props.info)}
+            </Text>
+          </Modal>
+        </Portal>
+    </Provider>
   )
 }
 
@@ -57,7 +78,7 @@ const darkStyles = StyleSheet.create({
     margin: "auto",
     paddingVertical: 5,
     height: 160,
-    minWidth: "40%"
+    width: "90%",
   },
   container: {
     flexGrow: 1,
@@ -71,6 +92,10 @@ const darkStyles = StyleSheet.create({
   },
   icon: {
     backgroundColor: DarkModeColors.CardBackground
+  },
+  modal: {
+    backgroundColor: DarkModeColors.MenuBackground,
+    padding: 20
   }
 }
 );
@@ -81,7 +106,7 @@ const styles = StyleSheet.create({
       margin: "auto",
       paddingVertical: 5,
       height: 160,
-      minWidth: "40%"
+      width: "90%",
     },
     container: {
       flex: 1,
@@ -96,6 +121,10 @@ const styles = StyleSheet.create({
     },
     icon: {
       backgroundColor: LightModeColors.CardBackground
+    },
+    modal: {
+      backgroundColor: LightModeColors.MenuBackground,
+      padding: 20
     }
   }
 );

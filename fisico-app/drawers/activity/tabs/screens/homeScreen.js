@@ -22,7 +22,7 @@ const HomeScreen = () => {
   return (
     <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
       {workouts.map((workoutObject, index) => (
-        <Workout key={index} info={workoutObject}>{ JSON.stringify(workoutObject) }</Workout>
+        <Workout key={index} info={workoutObject}/>
       ))}
     </ScrollView>
   )
