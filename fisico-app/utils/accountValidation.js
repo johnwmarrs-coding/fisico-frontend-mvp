@@ -1,4 +1,4 @@
-
+const sha256 = require('js-sha256');
 
 export const validateEmail = (text) => {
     const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -17,3 +17,7 @@ export const validatePassword = (text) => {
        return false;
    }
 };
+
+export const hashString = (text) => {
+    return sha256(text);
+}

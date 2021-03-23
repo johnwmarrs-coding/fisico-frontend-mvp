@@ -15,7 +15,9 @@ export const DarkModeColors = {
     FieldPlaceholder: '#CDCDCD',
     Warning: '#FF1122',
     Success: '#11FF22',
-    Link:  '#6bd8ff'
+    Link:  '#6bd8ff',
+    EnabledBackground: '#b0ceff',
+    DisabledBackground: '#2679ff'
 };
 
 export const LightModeColors = {
@@ -32,5 +34,7 @@ export const LightModeColors = {
     FieldPlaceholder: '#333333',
     Warning: '#FF1122',
     Success: '#11FF22',
-    Link: '#4400FF'
+    Link: '#4400FF',
+    EnabledBackground: '#b0ceff',
+    DisabledBackground: '#2679ff'
 };

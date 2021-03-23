@@ -1,21 +1,65 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput} from 'react-native';
+import { View, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
 import {DarkModeColors, LightModeColors} from '../../../styles/colors';
 import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
+import AppDataContext from '../../../contexts/appDataContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
-import { validateEmail, validatePassword} from '../../../utils/accountValidation';
+import { validateEmail, validatePassword, hashString} from '../../../utils/accountValidation';
 
 
 
 const SignupScreen = ( {navigation} ) => {
   const themeContext = useContext(ThemeContext);
+  const appDataContext = useContext(AppDataContext);
+
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
+
   const [text, setText] = useState('');
   const [emailText, setEmailText] = useState('');
   const [displayNameText, setDisplayNameText] = useState('');
   const [passwordText, setPasswordText] = useState('');
   const [verifyPasswordText, setVerifyPasswordText] = useState('');
+
+  const sendSignupRequest = async () => {
+    setIsWorking(true);
+    try {
+      let response = await fetch('http://localhost:3000/user/signup', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'username': displayNameText,
+          'email': emailText,
+          'password_hash': hashString(passwordText),
+        })
+      });
+      let json = await response.json();
+      if (json.success) {
+        console.log('SUCCESS');
+        console.log('MESSAGE: ' + json.msg);
+        console.log('TOKEN: ' + json.token_hash);
+        console.log(JSON.stringify(json));
+        appDataContext.setEmail(emailText);
+        appDataContext.setDisplayName(displayNameText);
+        appDataContext.setLoggedIn(true);
+        appDataContext.setAuthToken(json.token_hash);
+      }else {
+        console.log("FAILURE");
+        console.log(JSON.stringify(json));
+        setLoginFailed(true);
+      }
+      
+    } catch (error) {
+      console.error(error);
+      setLoginFailed(true);
+    }
+    setIsWorking(false);
+  }
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
       <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Welcome!</Title>
@@ -74,7 +118,22 @@ const SignupScreen = ( {navigation} ) => {
         secureTextEntry={true}
         placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
-      <Button style={{marginTop: 5, marginBottom: 5}} onPress={() => console.log('Submit Pressed')} mode='contained'>Sign Up</Button>
+      { isWorking? <ActivityIndicator/> :
+      <Button disabled={!(validateEmail(emailText) && passwordText == verifyPasswordText && displayNameText != '' && validatePassword(passwordText))} 
+        style={themeContext.darkMode ? stylesDark.button : styles.button} 
+        labelStyle={{color: themeContext.darkMode ? DarkModeColors.ContentForeground : DarkModeColors.ContentForeground}}
+        onPress={sendSignupRequest}
+        mode='contained'>
+          Sign Up
+      </Button>
+      }
+      {
+        loginFailed ? 
+        <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+          Login Failed
+        </Text>
+        : null
+      }
       <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
         <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>Already a User?</Text>
         <Button 
@@ -115,7 +174,12 @@ const stylesDark = {
   },
   warning: {
     color: DarkModeColors.Warning,
-    fontSize: 14
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  button: {
+    marginTop: 5,
+    marginBottom: 5,
   }
 };
 
@@ -147,7 +211,12 @@ const styles = {
   },
   warning: {
     color: LightModeColors.Warning,
-    fontSize: 14
-  }
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  button: {
+    marginTop: 5,
+    marginBottom: 5,
+  },
 };
 export default SignupScreen;
