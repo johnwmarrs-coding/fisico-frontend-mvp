@@ -41,7 +41,7 @@ const Workout = (props) => {
           <Card
             style={themeContext.darkMode ? darkStyles.container : styles.container}
             elevation={5}
-            onPress={showModal}
+            // onPress={showModal}
           >
             <Card.Title 
               titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
