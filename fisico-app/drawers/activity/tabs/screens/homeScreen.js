@@ -1,18 +1,59 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
+import Workout from '../../workout';
+import ThemeContext from '../../../../contexts/themeContext';
 
 const HomeScreen = () => {
+  const themeContext = useContext(ThemeContext);
+  const [workouts, setWorkouts] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3000/workout/604ec6262586462a620c3a92')
+    .then((response) => response.json())
+    .then((json) => {  
+      return setWorkouts(json.workout);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }, [])
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <Text>Home Screen</Text>
-      <Ionicons name="home" size={30} color="#900" />
-    </View>
+    <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
+      {workouts.map((workoutObject, index) => (
+        <Workout key={index} info={workoutObject}/>
+      ))}
+    </ScrollView>
   )
 }
+
+const stylesDark = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: DarkModeColors.MenuBackground
+  },
+  label: {
+    color: DarkModeColors.ContentForeground,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold"
+  }
+});
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: LightModeColors.ContentBackground
+  },
+  label: {
+    color: LightModeColors.ContentForeground,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold"
+  }
+});
+
 export default HomeScreen;
