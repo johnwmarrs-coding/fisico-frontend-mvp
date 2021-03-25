@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
 import ThemeContext from '../../../../contexts/themeContext';
 
-const HomeScreen = () => {
+const HomeScreen = ( {navigation}) => {
   const themeContext = useContext(ThemeContext);
   const [workouts, setWorkouts] = useState([]);
   useEffect(() => {
@@ -20,11 +20,14 @@ const HomeScreen = () => {
   }, [])
 
   return (
-    <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
-      {workouts.map((workoutObject, index) => (
-        <Workout key={index} info={workoutObject}/>
-      ))}
-    </ScrollView>
+    <View>
+      <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
+        {workouts.map((workoutObject, index) => (
+          <Workout key={index} info={workoutObject}/>
+        ))}
+      </ScrollView>
+      <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
+    </View>
   )
 }
 
