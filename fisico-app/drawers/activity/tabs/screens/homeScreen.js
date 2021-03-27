@@ -4,12 +4,13 @@ import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
 import ThemeContext from '../../../../contexts/themeContext';
+import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls'
 
 const HomeScreen = ( {navigation}) => {
   const themeContext = useContext(ThemeContext);
   const [workouts, setWorkouts] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:3000/workout/604ec6262586462a620c3a92')
+    fetch(FISICO_URL + '/workout/604ec6262586462a620c3a92')
     .then((response) => response.json())
     .then((json) => {  
       return setWorkouts(json.workout);

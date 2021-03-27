@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, hashString } from '../../../utils/accountValidation';
 import AppDataContext from '../../../contexts/appDataContext';
+import { FISICO_URL } from '../../../utils/urls';
 
 
 
@@ -16,7 +17,7 @@ const HomeScreen = ( {navigation} ) => {
 
   const sendLogoutRequest = async () => {
     try {
-      let response = await fetch('http://localhost:3000/user/logout', {
+      let response = await fetch(FISICO_URL + '/user/logout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

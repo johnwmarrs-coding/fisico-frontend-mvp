@@ -7,6 +7,7 @@ import AppDataContext from '../../../contexts/appDataContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, validatePassword, hashString} from '../../../utils/accountValidation';
+import { FISICO_URL } from '../../../utils/urls';
 
 
 
@@ -26,7 +27,7 @@ const SignupScreen = ( {navigation} ) => {
   const sendSignupRequest = async () => {
     setIsWorking(true);
     try {
-      let response = await fetch('http://localhost:3000/user/signup', {
+      let response = await fetch(FISICO_URL + '/user/signup', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

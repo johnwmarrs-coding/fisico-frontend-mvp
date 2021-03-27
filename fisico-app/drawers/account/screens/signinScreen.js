@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, hashString } from '../../../utils/accountValidation';
 import AppDataContext from '../../../contexts/appDataContext';
+import { FISICO_URL } from '../../../utils/urls';
 
 
 
@@ -22,7 +23,7 @@ const SigninScreen = ( {navigation} ) => {
   const sendSigninRequest = async () => {
     setIsWorking(true);
     try {
-      let response = await fetch('http://localhost:3000/user/login', {
+      let response = await fetch(FISICO_URL + '/user/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
