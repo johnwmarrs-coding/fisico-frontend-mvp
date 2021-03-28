@@ -6,10 +6,13 @@ import { Picker } from '@react-native-picker/picker';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
 import ThemeContext from '../../../../contexts/themeContext';
+import  AppDataContext  from '../../../../contexts/appDataContext';
 import {WorkoutTypes, WorkoutFields, LiftFields, DistanceFields, CommonLifts, DetailTypes, DistanceUnits, WeightUnits} from '../../../../utils/workoutTypes';
+import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 
-const LogWorkoutScreen = ( {navigation}) => {
+const LogWorkoutScreen = ( {navigation}, props) => {
   const themeContext = useContext(ThemeContext);
+  const appDataContext = useContext(AppDataContext);
 
   const [workoutType, setWorkoutType] = useState('Distance');
   const [workoutName, setWorkoutName] = useState(null);
@@ -30,6 +33,14 @@ const LogWorkoutScreen = ( {navigation}) => {
   const [proposedWorkout, setProposedWorkout] = useState(null);
 
   const [entryState, setEntryState] = useState(0);
+
+  const logWorkout = async (workout) => {
+    try {
+        await SaveWorkout(workout);
+    }catch(error){
+        console.log(error);
+    }
+  };
 
   return (
       <View style={themeContext.darkMode? stylesDark.container : styles.container}>
@@ -88,7 +99,7 @@ const LogWorkoutScreen = ( {navigation}) => {
         {entryState == 1 ?
             <View>
             {workoutResults.map((item, key) => (
-                <Text>{JSON.stringify(item)}</Text>
+                <Text key={key}>{JSON.stringify(item)}</Text>
                 )
             )}
             <Text>Detail Type</Text>
@@ -155,13 +166,13 @@ const LogWorkoutScreen = ( {navigation}) => {
                     <TextInput
                         placeholder='Sets'
                         onChangeText={text => setWorkoutDetailNumSets(text)}
-                        value={workoutDetailDuration}
+                        value={workoutDetailNumSets}
                         style={themeContext.darkMode? stylesDark.field : styles.field}
                     />
                     <TextInput
                         placeholder='Reps'
                         onChangeText={text => setWorkoutDetailNumReps(text)}
-                        value={workoutDetailDuration}
+                        value={workoutDetailNumReps}
                         style={themeContext.darkMode? stylesDark.field : styles.field}
                     />
                     
@@ -183,7 +194,7 @@ const LogWorkoutScreen = ( {navigation}) => {
                             if (workoutDetailType == 'Distance'){
                                 result = {
                                     name: workoutDetailName,
-                                    distance: workoutDetailDistance,
+                                    distance: Number(workoutDetailDistance),
                                     units: workoutDetailUnits,
                                     duration: workoutDetailDuration,
                                 }
@@ -194,10 +205,10 @@ const LogWorkoutScreen = ( {navigation}) => {
                             } else if (workoutDetailType == 'Lift'){
                                 result = {
                                     name: workoutDetailName,
-                                    distance: workoutDetailWeight,
+                                    weight: Number(workoutDetailWeight),
                                     units: workoutDetailUnits,
-                                    num_sets: workoutDetailNumSets,
-                                    num_reps: workoutDetailNumReps,
+                                    num_sets: Number(workoutDetailNumSets),
+                                    num_reps: Number(workoutDetailNumReps),
                                 }
                                 let tempResults = workoutResults;
                                 tempResults.push(result);
@@ -223,6 +234,7 @@ const LogWorkoutScreen = ( {navigation}) => {
                     onPress={() => {
                             let newWorkout = {
                                 name: workoutName,
+                                description: workoutDescription,
                                 workout_type: workoutType,
                                 date: Date(),
                                 start_time: null,
@@ -243,7 +255,7 @@ const LogWorkoutScreen = ( {navigation}) => {
         {entryState == 2 ?
         <View>
             <Text>Does this look right?</Text>
-            <Text>{JSON.stringify(proposedWorkout)}</Text>
+            <Workout info={proposedWorkout}/>
             <View style={styles.row}>
                 <Button
                     mode='contained'
@@ -253,9 +265,11 @@ const LogWorkoutScreen = ( {navigation}) => {
                 <Button
                     mode='contained'
                     style={themeContext.darkMode? stylesDark.button : styles.button}
-                    onPress={() => {
+                    onPress={async () => {
                         console.log('SAVE WORKOUT');
-                        console.log(JSON.stringify(proposedWorkout));
+                        console.log('workout to save: ' + JSON.stringify(proposedWorkout));
+                        await logWorkout(proposedWorkout);
+                        appDataContext.triggerRefresh(new Date());
                         navigation.goBack();
                     }}
                 >Yep!</Button>
@@ -313,6 +327,7 @@ const stylesDark = {
     row: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        marginTop: 10,
     }
   };
   

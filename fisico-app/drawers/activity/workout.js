@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
-import { Avatar, TouchableRipple, Card, Modal, Portal, Provider } from 'react-native-paper';
+import { Avatar, TouchableRipple, Card, Modal, Portal, Provider, Title, Paragraph } from 'react-native-paper';
 
 function chooseIcon(type) {
   if (type == "Distance")
@@ -26,22 +26,21 @@ const Workout = (props) => {
     style={themeContext.darkMode ? darkStyles.icon : styles.icon}
     {...iconProps}
     icon={workoutIcon}
-    size="83"
+    size={60}
   />
 
   // Modal
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+  const toggleVisiblity = () => setVisible(!visible);
 
   return (
-    <Provider>
-      <View style={themeContext.darkMode ? darkStyles.layout : styles.layout}>
-        <TouchableRipple>
+     
           <Card
             style={themeContext.darkMode ? darkStyles.container : styles.container}
             elevation={5}
-            // onPress={showModal}
+            onPress={toggleVisiblity}
           >
             <Card.Title 
               titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
@@ -50,45 +49,35 @@ const Workout = (props) => {
               subtitle={props.info.workout_type}
               left={Icon}
             />
-            {/* <Card.Content>
-              <Title>Card title</Title>
-              <Paragraph>Card content</Paragraph>
-            </Card.Content> */}
+            {visible ? 
+              <Card.Content>
+                <Title>{props.info.name}</Title>
+                <Paragraph>{props.info.description}</Paragraph>
+              </Card.Content>
+              : null  
+            }
           </Card>
-        </TouchableRipple>
-      </View>
-      <Portal>
-          <Modal
-            visible={visible}
-            onDismiss={hideModal}
-            contentContainerStyle={themeContext.darkMode ? darkStyles.modal : styles.modal}
-          >
-            <Text>
-              {JSON.stringify(props.info)}
-            </Text>
-          </Modal>
-        </Portal>
-    </Provider>
+       
+
   )
 }
 
 const darkStyles = StyleSheet.create({
   layout: {
     flex: 1,
-    margin: "auto",
     paddingVertical: 5,
-    height: 160,
-    width: "90%",
+    width: "95%",
+    alignSelf: 'center',
   },
   container: {
-    flexGrow: 1,
-    backgroundColor: DarkModeColors.CardBackground
+    backgroundColor: DarkModeColors.CardBackground,
+    justifyContent: 'center',
+    marginVertical: 5
   },
   label: {
     color: DarkModeColors.CardForeground
   },
   details: {
-    flex: 1
   },
   icon: {
     backgroundColor: DarkModeColors.CardBackground
@@ -103,27 +92,25 @@ const darkStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     layout: {
       flex: 1,
-      margin: "auto",
       paddingVertical: 5,
-      height: 160,
-      width: "90%",
+      width: "95%",
+      alignSelf: 'center'
     },
     container: {
-      flex: 1,
-      backgroundColor: LightModeColors.CardBackground
+      backgroundColor: LightModeColors.CompletedBackground,
+      marginTop: 5,
     },
     label: {
       color: LightModeColors.CardForeground
     },
     details: {
-      flex: 1,
       color: LightModeColors.CardForeground
     },
     icon: {
-      backgroundColor: LightModeColors.CardBackground
+      backgroundColor: LightModeColors.CompletedBackground
     },
     modal: {
-      backgroundColor: LightModeColors.MenuBackground,
+      backgroundColor: LightModeColors.CompletedBackground,
       padding: 20
     }
   }

@@ -21,7 +21,6 @@ const SigninScreen = ( {navigation} ) => {
   const [isWorking, setIsWorking] = useState(false);
 
   const sendSigninRequest = async () => {
-    setIsWorking(true);
     try {
       let response = await fetch(FISICO_URL + '/user/login', {
         method: 'POST',
@@ -53,7 +52,6 @@ const SigninScreen = ( {navigation} ) => {
       console.error(error);
       setLoginFailed(true);
     }
-    setIsWorking(false);
   }
 
     
@@ -90,7 +88,7 @@ const SigninScreen = ( {navigation} ) => {
       <Button disabled={!validateEmail(emailText)}
        style={themeContext.darkMode ? stylesDark.button : styles.button} 
        labelStyle={{color: themeContext.darkMode ? DarkModeColors.ContentForeground : DarkModeColors.ContentForeground}}
-       onPress={sendSigninRequest} mode='contained'>
+       onPress={() => {setIsWorking(true); sendSigninRequest(); setIsWorking(false);}} mode='contained'>
          Sign in
       </Button>
       }
