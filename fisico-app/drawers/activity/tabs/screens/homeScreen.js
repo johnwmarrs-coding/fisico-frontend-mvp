@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { ScrollView, View, StyleSheet, Text, TouchableHighlight, Button } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
 import ThemeContext from '../../../../contexts/themeContext';
-import { Provider, Portal, Modal } from 'react-native-paper';
+import { Provider, Portal } from 'react-native-paper';
+import WorkoutDetails from '../../workoutDetails';
 
 const HomeScreen = () => {
   const themeContext = useContext(ThemeContext);
   const [workouts, setWorkouts] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:3000/workout/604ec6262586462a620c3a92')
+    fetch('http://192.168.1.125:3000/workout/604ec6262586462a620c3a92')
     .then((response) => response.json())
     .then((json) => {  
       return setWorkouts(json.workout);
@@ -26,26 +27,18 @@ const HomeScreen = () => {
   return (
     <Provider>
       <ScrollView
-      style={themeContext.darkMode ? stylesDark.container : styles.container}
+      style={styling(themeContext).container}
       >
         {workouts.map((workoutObject, workoutIndex) => (
           <View key={workoutIndex}>
             <Workout info={workoutObject} onPress={() => setShownModal(workoutIndex)}/>
             <Portal>
-              <Modal
-                animationType="slide"
-                visible={shownModal == workoutIndex}  // this is really janky but works
-                onDismiss={() => setShownModal(-1)}
-                onRequestClose={() => setShownModal(-1)}
-                transparent={false}
-                contentContainerStyle={themeContext.darkMode ? stylesDark.modal : styles.modal}
-              >
-                <View>
-                  <Text style={themeContext.darkMode ? stylesDark.modalText : styles.modalText}>
-                    {JSON.stringify(workoutObject)}
-                  </Text>
-                </View>
-              </Modal>
+              <WorkoutDetails
+                shownModal={shownModal}
+                workoutIndex={workoutIndex}
+                workoutObject={workoutObject}
+                setShownModal={setShownModal}
+              />
             </Portal>
           </View>
         ))}
@@ -54,51 +47,16 @@ const HomeScreen = () => {
   )
 }
 
-const stylesDark = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: DarkModeColors.MenuBackground
-  },
-  label: {
-    color: DarkModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  modal: {
-    backgroundColor: DarkModeColors.ContentBackground,
-    color: DarkModeColors.ContentForeground,
-    margin: "auto",
-    width: "90%",
-    height: "70%"
-  },
-  modalText: {
-    color: DarkModeColors.CardForeground
-  }
-});
+function styling(themeContext) {
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 15,
+      backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+    },
+  })
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: LightModeColors.ContentBackground
-  },
-  label: {
-    color: LightModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  modal: {
-    backgroundColor: LightModeColors.CardBackground,    
-    margin: "auto",
-    width: "90%",
-    height: "70%"
-  },
-  modalText: {
-    color: LightModeColors.CardForeground
-  }
-});
+  return style;
+}
 
 export default HomeScreen;

@@ -23,91 +23,73 @@ const Workout = (props) => {
   const themeContext = useContext(ThemeContext);
   const Icon = iconProps =>
   <Avatar.Icon
-    style={themeContext.darkMode ? darkStyles.icon : styles.icon}
+    color={themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground}
+    style={styling(themeContext).icon}
     {...iconProps}
     icon={workoutIcon}
-    size="83"
+    size={70}
   />
 
   return (
-    <View style={themeContext.darkMode ? darkStyles.layout : styles.layout}>
+    <View style={styling(themeContext).layout}>
       <Card
-        style={themeContext.darkMode ? darkStyles.container : styles.container}
-        elevation={5}
+        style={styling(themeContext).container}
+        elevation={4}
         onPress={() => props.onPress()}
       >
         <Card.Title 
-          titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
-          subtitleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
+          titleStyle={styling(themeContext).title}
+          subtitleStyle={styling(themeContext).title}
           title={props.info.name}
           subtitle={props.info.workout_type}
           left={Icon}
         />
-        <Card.Content>
+        <Card.Content style={styling(themeContext).details}>
           {props.info.plan.map((plan, index) => (
-              <Text key={index} style={themeContext.darkMode ? darkStyles.label : styles.label}>
-                {plan.name}
-              </Text>
+            <Text
+              key={index}
+              style={styling(themeContext).detailsLabel}
+            >
+              {plan.name}
+            </Text>
           ), [])}
-          {/* <Text>
-              {props.info.workout_type}
-          </Text> */}
         </Card.Content>
       </Card>
     </View>
-
   )
 }
 
-const darkStyles = StyleSheet.create({
-  layout: {
-    flex: 1,
-    margin: "auto",
-    paddingVertical: 5,
-    width: "90%",
-  },
-  container: {
-    flexGrow: 1,
-    backgroundColor: DarkModeColors.CardBackground,
-    minHeight: 120
-  },
-  label: {
-    color: DarkModeColors.CardForeground,
-    textTransform: "capitalize"
-  },
-  details: {
-    flex: 1
-  },
-  icon: {
-    backgroundColor: DarkModeColors.CardBackground
-  }
-}
-);
-
-const styles = StyleSheet.create({
+function styling(themeContext) {
+  const style = StyleSheet.create({
     layout: {
       flex: 1,
       margin: "auto",
       paddingVertical: 5,
-      width: "90%",
+      width: "100%",
     },
     container: {
-      flex: 1,
-      backgroundColor: LightModeColors.CardBackground,
-      minHeight: 120
+      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground,
+      minHeight: 125,
     },
-    label: {
-      color: LightModeColors.CardForeground,
-      textTransform: "capitalize"
+    title: {
+      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      textTransform: "capitalize",
     },
     details: {
       flex: 1,
-      color: LightModeColors.CardForeground
+      justifyContent: "flex-end"
+    },
+    detailsLabel: {
+      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      textTransform: "capitalize",
     },
     icon: {
-      backgroundColor: LightModeColors.CardBackground
+      paddingRight: 20, // For some reason the icon isn't lined up
+      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground
     }
-  }
-);
+  })
+
+  return style;
+}
 
 export default Workout;
