@@ -21,30 +21,78 @@ const WorkoutDetails = (props) => {
     >
       <Card.Title
         title={props.workoutObject.name}
-        titleStyle={styling(themeContext).text}
-        subtitle={props.workoutObject.completed ? "Completed" : "Not Yet Completed"}
-        subtitleStyle={styling(themeContext).text}
+        titleStyle={styling(themeContext).titleText}
       />
       <Card.Content>
-        {props.workoutObject.plan.map((plan, index) => (
-          <View key={index}>
-            {props.workoutObject.workout_type == "Weight Lifting" &&
-              <Text style={styling(themeContext).text}>
-                {`${plan.name}\n\t${plan.weight} ${plan.units}\t\t\t${plan.num_sets} sets\t\t\t${plan.num_reps} reps`}
-              </Text>
+        <View style={styling(themeContext).doubleColumn}>
+          <View>
+            <Text style={styling(themeContext).headerText}>
+              Plan
+            </Text>
+            {props.workoutObject.plan.map((plan, index) => (
+              <View key={index}>
+                {props.workoutObject.workout_type == "Weight Lifting" &&
+                <View>
+                    <Text style={styling(themeContext).subheaderText}>
+                      {plan.name}
+                    </Text>
+                    <Text style={styling(themeContext).text}>
+                      {`${plan.weight}${plan.units}${plan.num_sets}${plan.num_reps}`}
+                    </Text>
+                  </View>
+                }
+                {props.workoutObject.workout_type == "Distance" &&
+                <View>
+                  <Text style={styling(themeContext).subheaderText}>
+                    {plan.name}
+                  </Text>
+                  <Text style={styling(themeContext).text}>
+                    {`${plan.distance}${plan.units}${plan.duration}`}
+                  </Text>
+                </View>
+                }
+                {props.workoutObject.workout_type == "Rest" &&
+                  <Text style={styling(themeContext).text}>
+                    Rest Day!
+                  </Text>
+                }
+              </View>
+            ))} 
+          </View>
+          <View>
+            <Text style={styling(themeContext).headerText}>
+              Results
+            </Text>
+            {props.workoutObject.completed &&
+              <View>
+                {props.workoutObject.results.map((results, index) => (
+                  <View key={index}>
+                    {props.workoutObject.workout_type == "Weight Lifting" &&
+                      <Text style={styling(themeContext).text}>
+                        {`${results.name}`}
+                      </Text>
+                    }
+                    {props.workoutObject.workout_type == "Distance" &&
+                      <Text style={styling(themeContext).text}>
+                        {`${results.name}\n\t${results.distance} ${results.units}\t\t\t${results.duration} secs`}
+                      </Text>
+                    }
+                    {props.workoutObject.workout_type == "Rest" &&
+                      <Text style={styling(themeContext).subheaderText}>
+                        Rest Day!
+                      </Text>
+                    }
+                  </View>
+                ))}
+              </View>
             }
-            {props.workoutObject.workout_type == "Distance" &&
-              <Text style={styling(themeContext).text}>
-                {`${plan.name}\n\t${plan.distance} ${plan.units}\t\t\t${plan.duration} secs`}
-              </Text>
-            }
-            {props.workoutObject.workout_type == "Rest" &&
-              <Text style={styling(themeContext).text}>
-                Rest Day!
+            {props.workoutObject.completed == false &&
+              <Text style={styling(themeContext).subheaderText}>
+                Not Yet Completed
               </Text>
             }
           </View>
-        ))}
+        </View>
       </Card.Content>
     </Card>
   </Modal>
@@ -53,6 +101,8 @@ const WorkoutDetails = (props) => {
 
 function styling(themeContext) {
   const style = StyleSheet.create({
+
+    // Layout
     modal: {
       margin: 40,
     },
@@ -62,9 +112,31 @@ function styling(themeContext) {
       width: "100%",
       margin: "auto"
     },
-    text: {
+    doubleColumn: {
+      justifyContent: "space-between",
+      flexDirection: "row"
+    },
+
+
+    // Text
+    titleText: {
       color: themeContext.darkMode? DarkModeColors.CardForeground : LightModeColors.CardForeground,
       textTransform: "capitalize",
+    },
+    headerText: {
+      color: themeContext.darkMode? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      textTransform: "capitalize",
+      textAlign: "center",
+      fontSize: 18
+    },
+    subheaderText: {
+      color: themeContext.darkMode? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
+      textTransform: "capitalize",
+    },
+    text: {
+      color: themeContext.darkMode? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+      textTransform: "capitalize",
+      paddingLeft: 20
     },
   })
 
