@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
-import { Avatar, TouchableRipple, Card, Modal, Portal, Provider, Title, Paragraph } from 'react-native-paper';
+import { Avatar, Card } from 'react-native-paper';
 
 function chooseIcon(type) {
   if (type == "Distance")
@@ -23,97 +23,74 @@ const Workout = (props) => {
   const themeContext = useContext(ThemeContext);
   const Icon = iconProps =>
   <Avatar.Icon
-    style={themeContext.darkMode ? darkStyles.icon : styles.icon}
+    color={themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground}
+    style={styling(themeContext).icon}
     {...iconProps}
     icon={workoutIcon}
-    size={60}
+    size={70}
   />
 
-  // Modal
-  const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const toggleVisiblity = () => setVisible(!visible);
-
   return (
-     
-          <Card
-            style={themeContext.darkMode ? darkStyles.container : styles.container}
-            elevation={5}
-            onPress={toggleVisiblity}
-          >
-            <Card.Title 
-              titleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
-              subtitleStyle={themeContext.darkMode ? darkStyles.label : styles.label}
-              title={props.info.name}
-              subtitle={props.info.workout_type}
-              left={Icon}
-            />
-            {visible ? 
-              <Card.Content>
-                <Title>{props.info.name}</Title>
-                <Paragraph>{props.info.description}</Paragraph>
-              </Card.Content>
-              : null  
-            }
-          </Card>
-       
-
+    <View style={styling(themeContext).layout}>
+      <Card
+        style={styling(themeContext).container}
+        elevation={4}
+        onPress={() => props.onPress()}
+      >
+        <Card.Title 
+          titleStyle={styling(themeContext).title}
+          subtitleStyle={styling(themeContext).title}
+          title={props.info.name}
+          subtitle={props.info.workout_type}
+          left={Icon}
+        />
+        <Card.Content style={styling(themeContext).details}>
+          {props.info.plan.map((plan, index) => (
+            <Text
+              key={index}
+              style={styling(themeContext).detailsLabel}
+            >
+              {plan.name}
+            </Text>
+          ), [])}
+        </Card.Content>
+      </Card>
+    </View>
   )
 }
 
-const darkStyles = StyleSheet.create({
-  layout: {
-    flex: 1,
-    paddingVertical: 5,
-    width: "95%",
-    alignSelf: 'center',
-  },
-  container: {
-    backgroundColor: DarkModeColors.CardBackground,
-    justifyContent: 'center',
-    marginVertical: 5
-  },
-  label: {
-    color: DarkModeColors.CardForeground
-  },
-  details: {
-  },
-  icon: {
-    backgroundColor: DarkModeColors.CardBackground
-  },
-  modal: {
-    backgroundColor: DarkModeColors.MenuBackground,
-    padding: 20
-  }
-}
-);
-
-const styles = StyleSheet.create({
+function styling(themeContext) {
+  const style = StyleSheet.create({
     layout: {
       flex: 1,
       paddingVertical: 5,
-      width: "95%",
-      alignSelf: 'center'
+      width: "100%",
     },
     container: {
-      backgroundColor: LightModeColors.CompletedBackground,
-      marginTop: 5,
+      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground,
+      minHeight: 125,
+
     },
-    label: {
-      color: LightModeColors.CardForeground
+    title: {
+      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      textTransform: "capitalize",
     },
     details: {
-      color: LightModeColors.CardForeground
+
+      flex: 1,
+      justifyContent: "flex-end"
+    },
+    detailsLabel: {
+      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      textTransform: "capitalize",
     },
     icon: {
-      backgroundColor: LightModeColors.CompletedBackground
-    },
-    modal: {
-      backgroundColor: LightModeColors.CompletedBackground,
-      padding: 20
+      paddingRight: 20, // For some reason the icon isn't lined up
+      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground
     }
-  }
-);
+  })
+
+  return style;
+}
 
 export default Workout;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
+
 import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
@@ -8,6 +9,8 @@ import  AppDataContext  from '../../../../contexts/appDataContext';
 import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls';
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Provider, Portal } from 'react-native-paper';
+import WorkoutDetails from '../../workoutDetails';
 
 const HomeScreen = ( {navigation}) => {
   const themeContext = useContext(ThemeContext);
@@ -38,49 +41,46 @@ const HomeScreen = ( {navigation}) => {
   }
 
 
+  // Modal
+  const [shownModal, setShownModal] = React.useState(-1);
+
   return (
-    /*
-    {workouts.map((workoutObject, index) => (
-          <Text key={index}>{workoutObject.name}</Text>
-        ))}
-    */
-   
-    <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
+
+    <Provider>
+      <ScrollView
+      style={styling(themeContext).container}
+      >
         <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
-        {workouts.map((workoutObject, index) => (
-          <Workout key={index} info={workoutObject}/>
+        {workouts.map((workoutObject, workoutIndex) => (
+          <View key={workoutIndex}>
+            <Workout info={workoutObject} onPress={() => setShownModal(workoutIndex)}/>
+            <Portal>
+              <WorkoutDetails
+                shownModal={shownModal}
+                workoutIndex={workoutIndex}
+                workoutObject={workoutObject}
+                setShownModal={setShownModal}
+              />
+            </Portal>
+          </View>
         ))}
-    </ScrollView>
+      </ScrollView>
+    </Provider>
+
   )
 }
 
-const stylesDark = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: DarkModeColors.MenuBackground
-  },
-  label: {
-    color: DarkModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
-  }
-});
+function styling(themeContext) {
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 15,
+      backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+    },
+  })
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: LightModeColors.ContentBackground
-  },
-  label: {
-    color: LightModeColors.ContentForeground,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold"
-  }
-});
+  return style;
+}
 
 
 export default HomeScreen;
