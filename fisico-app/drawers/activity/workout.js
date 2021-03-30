@@ -4,6 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
 import { Avatar, Card } from 'react-native-paper';
+import WorkoutDetails from './workoutDetails';
 
 function chooseIcon(type) {
   if (type == "Distance")
@@ -17,6 +18,8 @@ function chooseIcon(type) {
 const Workout = (props) => {
   // Icon
   const [workoutIcon, setWorkoutIcon] = useState("");  
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible);
   useEffect(() => {
     setWorkoutIcon(chooseIcon(props.info.workout_type));
   }, []);
@@ -31,11 +34,11 @@ const Workout = (props) => {
   />
 
   return (
-    <View style={styling(themeContext).layout}>
       <Card
         style={styling(themeContext).container}
         elevation={4}
-        onPress={() => props.onPress()}
+        //onPress={() => props.onPress()}
+        onPress={toggleDetailsVisible}
       >
         <Card.Title 
           titleStyle={styling(themeContext).title}
@@ -44,6 +47,7 @@ const Workout = (props) => {
           subtitle={props.info.workout_type}
           left={Icon}
         />
+        {detailsVisible &&
         <Card.Content style={styling(themeContext).details}>
           {props.info.plan.map((plan, index) => (
             <Text
@@ -53,22 +57,21 @@ const Workout = (props) => {
               {plan.name}
             </Text>
           ), [])}
+          <WorkoutDetails
+            workoutObject={props.info}
+          />
         </Card.Content>
+        }
       </Card>
-    </View>
   )
 }
 
 function styling(themeContext) {
   const style = StyleSheet.create({
-    layout: {
-      flex: 1,
-      paddingVertical: 5,
-      width: "100%",
-    },
     container: {
       backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground,
-      minHeight: 125,
+      paddingTop: 5,
+      marginVertical: 5
 
     },
     title: {
@@ -76,9 +79,7 @@ function styling(themeContext) {
       textTransform: "capitalize",
     },
     details: {
-
-      flex: 1,
-      justifyContent: "flex-end"
+      justifyContent: "flex-start"
     },
     detailsLabel: {
       color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,

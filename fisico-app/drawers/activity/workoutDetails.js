@@ -8,22 +8,7 @@ import { Modal, Card } from 'react-native-paper';
 const WorkoutDetails = (props) => {
   const themeContext = useContext(ThemeContext);
   return (
-  <Modal
-    visible={props.shownModal == props.workoutIndex}  // this is really janky but works
-    onDismiss={() => props.setShownModal(-1)}
-    onRequestClose={() => props.setShownModal(-1)}
-    transparent={false}
-    contentContainerStyle={styling(themeContext).modal}
-  >
-    <Card
-      style={styling(themeContext).card}
-      elevation={4}
-    >
-      <Card.Title
-        title={props.workoutObject.name}
-        titleStyle={styling(themeContext).titleText}
-      />
-      <Card.Content>
+  
         <View style={styling(themeContext).doubleColumn}>
           <View>
             <Text style={styling(themeContext).headerText}>
@@ -93,9 +78,6 @@ const WorkoutDetails = (props) => {
             }
           </View>
         </View>
-      </Card.Content>
-    </Card>
-  </Modal>
   )
 }
 

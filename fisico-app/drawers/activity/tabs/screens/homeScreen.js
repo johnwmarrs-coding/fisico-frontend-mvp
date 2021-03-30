@@ -46,26 +46,17 @@ const HomeScreen = ( {navigation}) => {
 
   return (
 
-    <Provider>
-      <ScrollView
+    <ScrollView
       style={styling(themeContext).container}
       >
-        <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
+      <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
         {workouts.map((workoutObject, workoutIndex) => (
-          <View key={workoutIndex}>
-            <Workout info={workoutObject} onPress={() => setShownModal(workoutIndex)}/>
-            <Portal>
-              <WorkoutDetails
-                shownModal={shownModal}
-                workoutIndex={workoutIndex}
-                workoutObject={workoutObject}
-                setShownModal={setShownModal}
-              />
-            </Portal>
-          </View>
-        ))}
-      </ScrollView>
-    </Provider>
+        <View key={workoutIndex}>
+          <Workout info={workoutObject} onPress={() => setShownModal(workoutIndex)}/>
+        </View>
+      ))}
+    </ScrollView>
+
 
   )
 }
@@ -75,7 +66,7 @@ function styling(themeContext) {
     container: {
       flex: 1,
       padding: 15,
-      backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+      backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.Content,
     },
   })
 
