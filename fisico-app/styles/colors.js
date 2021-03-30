@@ -9,7 +9,16 @@ export const DarkModeColors = {
     CardBackground: '#454545',
     CardForeground: '#FFFFFF',
     CompletedBackground: '#FF7070',
-    PlannedBackground: '#93FF85'
+    PlannedBackground: '#93FF85',
+    FieldBackground: '#555555',
+    FieldForeground: '#FFFFFF',
+    FieldBorder: '#FF7070',
+    FieldPlaceholder: '#CDCDCD',
+    Warning: '#FF1122',
+    Success: '#11FF22',
+    Link:  '#6bd8ff',
+    EnabledBackground: '#b0ceff',
+    DisabledBackground: '#2679ff'
 };
 
 export const LightModeColors = {
@@ -21,5 +30,14 @@ export const LightModeColors = {
     CardBackground: '#5294ff',
     CardForeground: '#FFFFFF',
     CompletedBackground: '#FF7070',
-    PlannedBackground: '#93FF85'
+    PlannedBackground: '#93FF85',
+    FieldBackground: '#DDDDDD',
+    FieldForeground: '#000000',
+    FieldBorder: '#4285F4',
+    FieldPlaceholder: '#333333',
+    Warning: '#FF1122',
+    Success: '#11FF22',
+    Link: '#4400FF',
+    EnabledBackground: '#b0ceff',
+    DisabledBackground: '#2679ff'
 };

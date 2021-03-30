@@ -9,11 +9,8 @@ const HomeScreen = ({navigation}) => {
   const themeContext = useContext(ThemeContext);
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container}>
-      <View>
-        <Text style={themeContext.darkMode ? stylesDark.label : styles.label}>Dark Mode</Text>
-        <Switch onValueChange={themeContext.toggleDarkMode} value={themeContext.darkMode}/>
-      </View>
-      <Text>{'DarkMode: ' + themeContext.darkMode}</Text>
+      <Text style={themeContext.darkMode ? stylesDark.label : styles.label}>Dark Mode</Text>
+      <Switch onValueChange={themeContext.toggleDarkMode} value={themeContext.darkMode}/>
     </View>
   )
 }
@@ -26,9 +23,8 @@ const stylesDark = StyleSheet.create({
   },
   label: {
     color: DarkModeColors.ContentForeground,
-    textAlign: "center",
+    textAlign: 'left',
     fontSize: 20,
-    fontWeight: "bold"
   }
 });
 
@@ -40,9 +36,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: LightModeColors.ContentForeground,
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 20,
-    fontWeight: "bold"
   }
 });
 export default HomeScreen;

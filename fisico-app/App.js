@@ -11,6 +11,7 @@ import  Health  from './drawers/health/healthDrawer';
 import  Social  from './drawers/social/socialDrawer';
 import  Settings  from './drawers/settings/settingsDrawer';
 import ThemeContext from './contexts/themeContext';
+import AppDataContext from './contexts/appDataContext';
 import {DarkModeColors, LightModeColors} from './styles/colors';
 
 const Drawer = createDrawerNavigator();
@@ -22,39 +23,61 @@ const styles = StyleSheet.create(
   }
 )
 const App = () => {
+  // State and Objects supporting ThemeContext
   const [darkMode, setDarkMode] = useState(false);
-
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   }
-
   const themeData = {
     darkMode: darkMode,
     toggleDarkMode: toggleDarkMode,
   }
-  return (
-    <ThemeContext.Provider value={themeData}>
-      <SafeAreaProvider style={styles.container}>
-        <SafeAreaView style={ styles.container }>
-          <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Activity" 
-              drawerStyle={{
-                backgroundColor: darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
 
-              }}
-              drawerContentOptions={{
-                activeTintColor: darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
-                inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
-              }}
-            >
-              <Drawer.Screen name="Account" component={Account} />
-              <Drawer.Screen name="Activity" component={Activity} />
-              <Drawer.Screen name="Settings" component={Settings} />
-            </Drawer.Navigator>
-          </NavigationContainer>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </ThemeContext.Provider>
+  // State and Objects supporting AppDataContext
+  const [displayName, setDisplayName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [trigger, triggerRefresh] = useState(true);
+
+  const appData = {
+    displayName: displayName,
+    setDisplayName: setDisplayName,
+    email: email,
+    setEmail: setEmail,
+    authToken: authToken,
+    setAuthToken: setAuthToken,
+    loggedIn: loggedIn,
+    setLoggedIn: setLoggedIn,
+    triggerRefresh: triggerRefresh,
+    trigger: trigger,
+  }
+
+  return (
+    <AppDataContext.Provider value={appData}>
+      <ThemeContext.Provider value={themeData}>
+        <SafeAreaProvider style={styles.container}>
+          <SafeAreaView style={ styles.container }>
+            <NavigationContainer>
+              <Drawer.Navigator initialRouteName="Activity" 
+                drawerStyle={{
+                  backgroundColor: darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+
+                }}
+                drawerContentOptions={{
+                  activeTintColor: darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
+                  inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+                }}
+              >
+                <Drawer.Screen name="Account" component={Account} />
+                <Drawer.Screen name="Activity" component={Activity} />
+                <Drawer.Screen name="Settings" component={Settings} />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </ThemeContext.Provider>
+    </AppDataContext.Provider>
   );
 }
 

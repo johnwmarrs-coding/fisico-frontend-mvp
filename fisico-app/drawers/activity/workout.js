@@ -63,19 +63,20 @@ function styling(themeContext) {
   const style = StyleSheet.create({
     layout: {
       flex: 1,
-      margin: "auto",
       paddingVertical: 5,
       width: "100%",
     },
     container: {
       backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground,
       minHeight: 125,
+
     },
     title: {
       color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
       textTransform: "capitalize",
     },
     details: {
+
       flex: 1,
       justifyContent: "flex-end"
     },

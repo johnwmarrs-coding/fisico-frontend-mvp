@@ -1,64 +1,196 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button} from 'react-native';
+import { View, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
 import {DarkModeColors, LightModeColors} from '../../../styles/colors';
 import { useContext } from 'react';
 import ThemeContext from '../../../contexts/themeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Title, Text, Button } from 'react-native-paper';
+import { validateEmail, hashString } from '../../../utils/accountValidation';
+import AppDataContext from '../../../contexts/appDataContext';
+import { FISICO_URL } from '../../../utils/urls';
 
 
 
-const SigninScreen = () => {
+const SigninScreen = ( {navigation} ) => {
   const themeContext = useContext(ThemeContext);
-  const [text, setText] = useState('');
+  const appDataContext = useContext(AppDataContext);
+
+  const [emailText, setEmailText] = useState('');
+  const [passwordText, setPasswordText] = useState('');
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
+
+  const sendSigninRequest = async () => {
+    try {
+      let response = await fetch(FISICO_URL + '/user/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'email': emailText,
+          'password_hash': hashString(passwordText),
+        })
+      });
+      let json = await response.json();
+      if (json.success) {
+        console.log('SUCCESS');
+        console.log('MESSAGE: ' + json.msg);
+        console.log('TOKEN: ' + json.token_hash);
+        console.log(JSON.stringify(json));
+        appDataContext.setEmail(emailText);
+        appDataContext.setLoggedIn(true);
+        appDataContext.setAuthToken(json.token_hash);
+      }else {
+        console.log("FAILURE");
+        console.log(JSON.stringify(json));
+        setLoginFailed(true);
+      }
+      
+    } catch (error) {
+      console.error(error);
+      setLoginFailed(true);
+    }
+  }
+
+    
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
-      <Text style={themeContext.darkMode ? stylesDark.label : styles.label }>Email</Text>
+      <Title style={themeContext.darkMode ? stylesDark.label : styles.label }>Welcome!</Title>
+      <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>
+        Sign in to use social features and save your data in the cloud.
+      </Text>
+      {
+        emailText != '' && !validateEmail(emailText) ?
+        <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+          Invalid Email Address
+        </Text>
+        : null
+      }
       <TextInput
-        style={{height: 40, backgroundColor: '#222222', padding: 10}}
-        placeholder="Type here to translate!"
-        onChangeText={text => setText(text)}
-        defaultValue={text}
+        style={themeContext.darkMode ? stylesDark.field : styles.field}
+        placeholder='Email'
+        onChangeText={text => setEmailText(text)}
+        value={emailText}
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
-      <Text style={themeContext.darkMode ? stylesDark.label : styles.label }>Password</Text>
       <TextInput
-        style={{height: 40, backgroundColor: '#222222', padding: 10}}
-        placeholder="Type here to translate!"
-        onChangeText={text => setText(text)}
-        defaultValue={text}
+        style={themeContext.darkMode ? stylesDark.field : styles.field}
+        placeholder='Password'
+        onChangeText={text => setPasswordText(text)}
+        value={passwordText}
         secureTextEntry={true}
+        placeholderTextColor={themeContext.darkMode ? DarkModeColors.FieldPlaceholder : LightModeColors.FieldPlaceholder}
       />
-      <Button onPress={() => setText('PRESSED')} 
-        title="Submit"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
+
+      {isWorking ? <ActivityIndicator/> :
+      <Button disabled={!validateEmail(emailText)}
+       style={themeContext.darkMode ? stylesDark.button : styles.button} 
+       labelStyle={{color: themeContext.darkMode ? DarkModeColors.ContentForeground : DarkModeColors.ContentForeground}}
+       onPress={() => {setIsWorking(true); sendSigninRequest(); setIsWorking(false);}} mode='contained'>
+         Sign in
+      </Button>
+      }
+      {
+        loginFailed ? 
+        <Text style={themeContext.darkMode ? stylesDark.warning : styles.warning}>
+          Login Failed
+        </Text>
+        : null
+      }
+      <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
+        <Text style={themeContext.darkMode ? stylesDark.paragraph : styles.paragraph }>New User?</Text>
+        <Button 
+          mode='text' 
+          onPress={() => navigation.navigate('Signup')}
+          color={themeContext.darkMode ? DarkModeColors.Link : LightModeColors.Link}>
+            Sign Up
+        </Button>
+      </View>
     </View>
   )
 }
 
-const stylesDark = StyleSheet.create({
+const stylesDark = {
     container: {
       flex: 1,
       padding: 24,
       backgroundColor: DarkModeColors.ContentBackground,
+      justifyContent: 'flex-start',
     },
     label: {
       color: DarkModeColors.ContentForeground,
-      fontSize: 20,
-      fontWeight: "bold"
+      fontSize: 32,
+      fontWeight: "bold",
+      textAlign: 'center',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    paragraph: {
+      color: DarkModeColors.ContentForeground,
+      fontSize: 14,
+      textAlign: 'center',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    field: {
+      padding: 5,
+      height:40,
+      marginBottom: 5,
+      marginTop: 5,
+      backgroundColor: DarkModeColors.FieldBackground,
+      color: DarkModeColors.FieldForeground,
+    },
+    warning: {
+      color: DarkModeColors.Warning,
+      fontSize: 14,
+      textAlign: 'center'
+    },
+    button: {
+      marginTop: 5,
+      marginBottom: 5,
     }
-  });
+  };
   
-  const styles = StyleSheet.create({
+  const styles = {
     container: {
       flex: 1,
       padding: 24,
       backgroundColor: LightModeColors.ContentBackground,
+      justifyContent: 'flex-start',
     },
     label: {
       color: LightModeColors.ContentForeground,
-      fontSize: 20,
-      fontWeight: "bold"
-    }
-  });
+      fontSize: 32,
+      fontWeight: "bold",
+      textAlign: 'center',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    paragraph: {
+      color: LightModeColors.ContentForeground,
+      fontSize: 14,
+      textAlign: 'center',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    field: {
+      padding: 5,
+      height:40,
+      marginBottom: 5,
+      marginTop: 5,
+      backgroundColor: LightModeColors.FieldBackground,
+      color: LightModeColors.FieldForeground,
+    },
+    warning: {
+      color: LightModeColors.Warning,
+      fontSize: 14,
+      textAlign: 'center'
+    },
+    button: {
+      marginTop: 5,
+      marginBottom: 5,
+    },
+  };
 export default SigninScreen;
