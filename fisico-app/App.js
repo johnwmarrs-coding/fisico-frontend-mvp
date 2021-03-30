@@ -39,6 +39,7 @@ const App = () => {
   const [email, setEmail] = useState(null);
   const [authToken, setAuthToken] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [trigger, triggerRefresh] = useState(true);
 
   const appData = {
     displayName: displayName,
@@ -49,6 +50,8 @@ const App = () => {
     setAuthToken: setAuthToken,
     loggedIn: loggedIn,
     setLoggedIn: setLoggedIn,
+    triggerRefresh: triggerRefresh,
+    trigger: trigger,
   }
 
   return (

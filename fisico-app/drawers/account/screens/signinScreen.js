@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, hashString } from '../../../utils/accountValidation';
 import AppDataContext from '../../../contexts/appDataContext';
+import { FISICO_URL } from '../../../utils/urls';
 
 
 
@@ -20,9 +21,8 @@ const SigninScreen = ( {navigation} ) => {
   const [isWorking, setIsWorking] = useState(false);
 
   const sendSigninRequest = async () => {
-    setIsWorking(true);
     try {
-      let response = await fetch('http://localhost:3000/user/login', {
+      let response = await fetch(FISICO_URL + '/user/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -52,7 +52,6 @@ const SigninScreen = ( {navigation} ) => {
       console.error(error);
       setLoginFailed(true);
     }
-    setIsWorking(false);
   }
 
     
@@ -89,7 +88,7 @@ const SigninScreen = ( {navigation} ) => {
       <Button disabled={!validateEmail(emailText)}
        style={themeContext.darkMode ? stylesDark.button : styles.button} 
        labelStyle={{color: themeContext.darkMode ? DarkModeColors.ContentForeground : DarkModeColors.ContentForeground}}
-       onPress={sendSigninRequest} mode='contained'>
+       onPress={() => {setIsWorking(true); sendSigninRequest(); setIsWorking(false);}} mode='contained'>
          Sign in
       </Button>
       }

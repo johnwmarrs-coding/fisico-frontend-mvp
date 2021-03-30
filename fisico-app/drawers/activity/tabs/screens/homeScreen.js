@@ -1,29 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
-import ThemeContext from '../../../../contexts/themeContext';
+import  ThemeContext  from '../../../../contexts/themeContext';
+import  AppDataContext  from '../../../../contexts/appDataContext';
+import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls';
+import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HomeScreen = () => {
+const HomeScreen = ( {navigation}) => {
   const themeContext = useContext(ThemeContext);
+  const appDataContext = useContext(AppDataContext);
+
   const [workouts, setWorkouts] = useState([]);
+  const [timesRan, setTimesRan] = useState(0);
+
   useEffect(() => {
-    fetch('http://localhost:3000/workout/604ec6262586462a620c3a92')
-    .then((response) => response.json())
-    .then((json) => {  
-      return setWorkouts(json.workout);
-    })
-    .catch((error) => {
+    //clearAsyncStorage();
+    prepareWorkouts();
+  }, [appDataContext.trigger]);
+
+  const prepareWorkouts = async () => {
+    console.log('Times Ran: ' + timesRan);
+    setTimesRan(timesRan + 1);
+    try {
+      const workout_arr = await FetchWorkoutArray();
+      setWorkouts(workout_arr);
+    } catch (error) {
       console.error(error);
-    });
-  }, [])
+    } 
+  };
+
+  const clearAsyncStorage = async () => {
+    await AsyncStorage.clear();
+    console.log('Storage Cleared');
+  }
+
 
   return (
+    /*
+    {workouts.map((workoutObject, index) => (
+          <Text key={index}>{workoutObject.name}</Text>
+        ))}
+    */
+   
     <ScrollView style={themeContext.darkMode ? stylesDark.container : styles.container}>
-      {workouts.map((workoutObject, index) => (
-        <Workout key={index} info={workoutObject}/>
-      ))}
+        <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
+        {workouts.map((workoutObject, index) => (
+          <Workout key={index} info={workoutObject}/>
+        ))}
     </ScrollView>
   )
 }
@@ -55,5 +81,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+
 
 export default HomeScreen;

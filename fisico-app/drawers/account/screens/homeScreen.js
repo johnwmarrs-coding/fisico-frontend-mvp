@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Title, Text, Button } from 'react-native-paper';
 import { validateEmail, hashString } from '../../../utils/accountValidation';
 import AppDataContext from '../../../contexts/appDataContext';
+import { FISICO_URL } from '../../../utils/urls';
+import { SaveWorkoutArray } from '../../../utils/workoutStorage';
 
 
 
@@ -16,7 +18,7 @@ const HomeScreen = ( {navigation} ) => {
 
   const sendLogoutRequest = async () => {
     try {
-      let response = await fetch('http://localhost:3000/user/logout', {
+      let response = await fetch(FISICO_URL + '/user/logout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -46,6 +48,11 @@ const HomeScreen = ( {navigation} ) => {
     }
   }
 
+  const clearLocalData = async () => {
+    await SaveWorkoutArray([]);
+    appDataContext.triggerRefresh();
+  }
+
   return (
     <View style={themeContext.darkMode ? stylesDark.container : styles.container }>
 
@@ -55,6 +62,13 @@ const HomeScreen = ( {navigation} ) => {
         labelStyle={{color: DarkModeColors.ContentForeground}}
         onPress={sendLogoutRequest}>
          Log Out
+      </Button>
+      <Button
+        mode="contained"
+        style={themeContext.darkMode ? stylesDark.button : styles.button} 
+        labelStyle={{color: DarkModeColors.Warning}}
+        onPress={clearLocalData}>
+         Clear Data
       </Button>
     </View>
   )
