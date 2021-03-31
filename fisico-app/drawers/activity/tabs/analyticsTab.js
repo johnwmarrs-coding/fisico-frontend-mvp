@@ -3,7 +3,6 @@ import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AnalyticsScreen from './screens/analyticsScreen'
 import Header from '../../../shared/header';
-import ThemeContext from '../../../contexts/themeContext'
 
 
 const Stack = createStackNavigator();

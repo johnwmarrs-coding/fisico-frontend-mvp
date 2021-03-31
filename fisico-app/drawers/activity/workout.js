@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import ThemeContext from '../../contexts/themeContext';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
 import { Avatar, Card } from 'react-native-paper';
 import WorkoutDetails from './workoutDetails';
@@ -23,11 +22,10 @@ const Workout = (props) => {
   useEffect(() => {
     setWorkoutIcon(chooseIcon(props.info.workout_type));
   }, []);
-  const themeContext = useContext(ThemeContext);
   const Icon = iconProps =>
   <Avatar.Icon
-    color={themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground}
-    style={styling(themeContext).icon}
+    color={LightModeColors.CardForeground}
+    style={styles.icon}
     {...iconProps}
     icon={workoutIcon}
     size={70}
@@ -35,24 +33,24 @@ const Workout = (props) => {
 
   return (
       <Card
-        style={styling(themeContext).container}
+        style={styles.container}
         elevation={4}
         //onPress={() => props.onPress()}
         onPress={toggleDetailsVisible}
       >
         <Card.Title 
-          titleStyle={styling(themeContext).title}
-          subtitleStyle={styling(themeContext).title}
+          titleStyle={styles.title}
+          subtitleStyle={styles.title}
           title={props.info.name}
           subtitle={props.info.workout_type}
           left={Icon}
         />
         {detailsVisible &&
-        <Card.Content style={styling(themeContext).details}>
+        <Card.Content style={styles.details}>
           {props.info.plan.map((plan, index) => (
             <Text
               key={index}
-              style={styling(themeContext).detailsLabel}
+              style={styles.detailsLabel}
             >
               {plan.name}
             </Text>
@@ -66,32 +64,30 @@ const Workout = (props) => {
   )
 }
 
-function styling(themeContext) {
-  const style = StyleSheet.create({
+
+  const styles = StyleSheet.create({
     container: {
-      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground,
+      backgroundColor: LightModeColors.CardBackground,
       paddingTop: 5,
       marginVertical: 5
 
     },
     title: {
-      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      color: LightModeColors.CardForeground,
       textTransform: "capitalize",
     },
     details: {
       justifyContent: "flex-start"
     },
     detailsLabel: {
-      color: themeContext.darkMode ? DarkModeColors.CardForeground : LightModeColors.CardForeground,
+      color: LightModeColors.CardForeground,
       textTransform: "capitalize",
     },
     icon: {
       paddingRight: 20, // For some reason the icon isn't lined up
-      backgroundColor: themeContext.darkMode ? DarkModeColors.CardBackground : LightModeColors.CardBackground
+      backgroundColor: LightModeColors.CardBackground
     }
   })
 
-  return style;
-}
 
 export default Workout;

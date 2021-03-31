@@ -4,14 +4,12 @@ import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeTab from './tabs/homeTab'
 import {DarkModeColors, LightModeColors} from '../../styles/colors';
-import ThemeContext from '../../contexts/themeContext';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
 const Settings = () => {
-  const themeContext = useContext(ThemeContext);
   return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -32,10 +30,10 @@ const Settings = () => {
           },
         })}
         tabBarOptions={{
-          activeTintColor: themeContext.darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
-          inactiveTintColor: themeContext.darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+          activeTintColor: LightModeColors.MenuForegroundFocused,
+          inactiveTintColor: LightModeColors.MenuForeground,
           style: {
-            backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+            backgroundColor: LightModeColors.MenuBackground,
           }
         }}
       >

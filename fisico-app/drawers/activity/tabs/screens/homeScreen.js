@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
-import  ThemeContext  from '../../../../contexts/themeContext';
 import  AppDataContext  from '../../../../contexts/appDataContext';
 import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls';
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
@@ -13,7 +12,6 @@ import { Provider, Portal } from 'react-native-paper';
 import WorkoutDetails from '../../workoutDetails';
 
 const HomeScreen = ( {navigation}) => {
-  const themeContext = useContext(ThemeContext);
   const appDataContext = useContext(AppDataContext);
 
   const [workouts, setWorkouts] = useState([]);
@@ -47,7 +45,7 @@ const HomeScreen = ( {navigation}) => {
   return (
 
     <ScrollView
-      style={styling(themeContext).container}
+      style={styles.container}
       >
       <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
         {workouts.map((workoutObject, workoutIndex) => (
@@ -61,17 +59,13 @@ const HomeScreen = ( {navigation}) => {
   )
 }
 
-function styling(themeContext) {
-  const style = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       padding: 15,
-      backgroundColor: themeContext.darkMode ? DarkModeColors.MenuBackground : LightModeColors.Content,
+      backgroundColor: LightModeColors.Content,
     },
   })
-
-  return style;
-}
 
 
 export default HomeScreen;

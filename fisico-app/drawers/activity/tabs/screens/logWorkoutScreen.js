@@ -5,13 +5,11 @@ import { Button } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
-import ThemeContext from '../../../../contexts/themeContext';
 import  AppDataContext  from '../../../../contexts/appDataContext';
 import {WorkoutTypes, WorkoutFields, LiftFields, DistanceFields, CommonLifts, DetailTypes, DistanceUnits, WeightUnits} from '../../../../utils/workoutTypes';
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 
 const LogWorkoutScreen = ( {navigation}, props) => {
-  const themeContext = useContext(ThemeContext);
   const appDataContext = useContext(AppDataContext);
 
   const [workoutType, setWorkoutType] = useState('Distance');
@@ -43,21 +41,21 @@ const LogWorkoutScreen = ( {navigation}, props) => {
   };
 
   return (
-      <View style={themeContext.darkMode? stylesDark.container : styles.container}>
+      <View style={styles.container}>
           {entryState == 0 ?
             <View>
-                <Text style={themeContext.darkMode? stylesDark.label : styles.label}>Workout Overview</Text>
+                <Text style={styles.label}>Workout Overview</Text>
                 <TextInput
                     placeholder='workout name'
                     onChangeText={text => setWorkoutName(text)}
                     value={workoutName}
-                    style={themeContext.darkMode? stylesDark.field : styles.field}
+                    style={styles.field}
                 />
                 <TextInput
                     placeholder='description'
                     onChangeText={text => setWorkoutDescription(text)}
                     value={workoutDescription}
-                    style={themeContext.darkMode? stylesDark.field : styles.field}
+                    style={styles.field}
                 />
                 <Picker 
                     selectedValue={workoutType}
@@ -71,11 +69,11 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                 <View style={styles.row}>
                     <Button
                         mode='contained'
-                        style={themeContext.darkMode? stylesDark.button : styles.button}
+                        style={styles.button}
                         onPress={navigation.goBack}
                     >Cancel</Button>
                     <Button
-                        style={themeContext.darkMode? stylesDark.button : styles.button}
+                        style={styles.button}
                         mode='contained'
                         onPress={() => {
                                 if (workoutType == 'Distance'){
@@ -116,7 +114,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                 placeholder='name'
                 onChangeText={text => setWorkoutDetailName(text)}
                 value={workoutDetailName}
-                style={themeContext.darkMode? stylesDark.field : styles.field}
+                style={styles.field}
             />
             { workoutDetailType == 'Distance' ?
                 <View>
@@ -124,7 +122,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                         placeholder='Distance'
                         onChangeText={text => setWorkoutDetailDistance(text)}
                         value={workoutDetailDistance}
-                        style={themeContext.darkMode? stylesDark.field : styles.field}
+                        style={styles.field}
                     />
                     <Text>Units</Text>
                     <Picker 
@@ -140,7 +138,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                         placeholder='Duration (h:m:s)'
                         onChangeText={text => setWorkoutDetailDuration(text)}
                         value={workoutDetailDuration}
-                        style={themeContext.darkMode? stylesDark.field : styles.field}
+                        style={styles.field}
                     />
                     
                     
@@ -151,7 +149,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                         placeholder='Weight'
                         onChangeText={text => setWorkoutDetailWeight(text)}
                         value={workoutDetailWeight}
-                        style={themeContext.darkMode? stylesDark.field : styles.field}
+                        style={styles.field}
                     />
                     <Text>Units</Text>
                     <Picker 
@@ -167,28 +165,26 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                         placeholder='Sets'
                         onChangeText={text => setWorkoutDetailNumSets(text)}
                         value={workoutDetailNumSets}
-                        style={themeContext.darkMode? stylesDark.field : styles.field}
+                        style={styles.field}
                     />
                     <TextInput
                         placeholder='Reps'
                         onChangeText={text => setWorkoutDetailNumReps(text)}
                         value={workoutDetailNumReps}
-                        style={themeContext.darkMode? stylesDark.field : styles.field}
+                        style={styles.field}
                     />
-                    
-                    
                 </View>
                 
             }
             <View style={styles.row}>
                 <Button
                     mode='contained'
-                    style={themeContext.darkMode? stylesDark.button : styles.button}
+                    style={styles.button}
                     onPress={() => setEntryState(entryState - 1)}
                 >Previous</Button>
                 <Button
                     mode='contained'
-                    style={themeContext.darkMode? stylesDark.button : styles.button}
+                    style={styles.button}
                     onPress={() => {
                             let result = {};
                             if (workoutDetailType == 'Distance'){
@@ -230,7 +226,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                 >Add</Button>
                 <Button
                     mode='contained'
-                    style={themeContext.darkMode? stylesDark.button : styles.button}
+                    style={styles.button}
                     onPress={() => {
                             let newWorkout = {
                                 name: workoutName,
@@ -259,12 +255,12 @@ const LogWorkoutScreen = ( {navigation}, props) => {
             <View style={styles.row}>
                 <Button
                     mode='contained'
-                    style={themeContext.darkMode? stylesDark.button : styles.button}
+                    style={styles.button}
                     onPress={() => setEntryState(entryState - 1)}
                 >Nope</Button>
                 <Button
                     mode='contained'
-                    style={themeContext.darkMode? stylesDark.button : styles.button}
+                    style={styles.button}
                     onPress={async () => {
                         console.log('SAVE WORKOUT');
                         console.log('workout to save: ' + JSON.stringify(proposedWorkout));
@@ -284,53 +280,6 @@ const LogWorkoutScreen = ( {navigation}, props) => {
   
 }
 
-const stylesDark = {
-    container: {
-      flex: 1,
-      padding: 24,
-      backgroundColor: DarkModeColors.ContentBackground,
-      justifyContent: 'flex-start',
-    },
-    label: {
-      color: DarkModeColors.ContentForeground,
-      fontSize: 32,
-      fontWeight: "bold",
-      textAlign: 'center',
-      marginTop: 5,
-      marginBottom: 5,
-    },
-    paragraph: {
-      color: DarkModeColors.ContentForeground,
-      fontSize: 14,
-      textAlign: 'center',
-      marginTop: 5,
-      marginBottom: 5,
-    },
-    field: {
-      padding: 5,
-      height:40,
-      marginBottom: 5,
-      marginTop: 5,
-      backgroundColor: DarkModeColors.FieldBackground,
-      color: DarkModeColors.FieldForeground,
-    },
-    warning: {
-      color: DarkModeColors.Warning,
-      fontSize: 14,
-      textAlign: 'center'
-    },
-    button: {
-        marginTop: 5,
-        marginBottom: 5,
-        width: 120,
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 10,
-    }
-  };
-  
   const styles = {
     container: {
       flex: 1,

@@ -10,7 +10,6 @@ import  Diet  from './drawers/diet/dietDrawer';
 import  Health  from './drawers/health/healthDrawer';
 import  Social  from './drawers/social/socialDrawer';
 import  Settings  from './drawers/settings/settingsDrawer';
-import ThemeContext from './contexts/themeContext';
 import AppDataContext from './contexts/appDataContext';
 import {DarkModeColors, LightModeColors} from './styles/colors';
 
@@ -27,10 +26,6 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-  }
-  const themeData = {
-    darkMode: darkMode,
-    toggleDarkMode: toggleDarkMode,
   }
 
   // State and Objects supporting AppDataContext
@@ -55,28 +50,26 @@ const App = () => {
 
   return (
     <AppDataContext.Provider value={appData}>
-      <ThemeContext.Provider value={themeData}>
-        <SafeAreaProvider style={styles.container}>
-          <SafeAreaView style={ styles.container }>
-            <NavigationContainer>
-              <Drawer.Navigator initialRouteName="Activity" 
-                drawerStyle={{
-                  backgroundColor: darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
+      <SafeAreaProvider style={styles.container}>
+        <SafeAreaView style={ styles.container }>
+          <NavigationContainer>
+            <Drawer.Navigator 
+              drawerStyle={{ 
+                backgroundColor: darkMode ? DarkModeColors.MenuBackground : LightModeColors.MenuBackground,
 
-                }}
-                drawerContentOptions={{
-                  activeTintColor: darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
-                  inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
-                }}
-              >
-                <Drawer.Screen name="Account" component={Account} />
-                <Drawer.Screen name="Activity" component={Activity} />
-                <Drawer.Screen name="Settings" component={Settings} />
-              </Drawer.Navigator>
-            </NavigationContainer>
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </ThemeContext.Provider>
+              }}
+              drawerContentOptions={{
+                activeTintColor: darkMode ? DarkModeColors.MenuForegroundFocused : LightModeColors.MenuForegroundFocused,
+                inactiveTintColor: darkMode ? DarkModeColors.MenuForeground : LightModeColors.MenuForeground,
+              }}
+            >
+              {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
+              {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
+              <Drawer.Screen name="Account" component={Account} />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </AppDataContext.Provider>
   );
 }
