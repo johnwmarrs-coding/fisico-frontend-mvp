@@ -16,6 +16,7 @@ const HomeScreen = ( {navigation}) => {
 
   const [workouts, setWorkouts] = useState([]);
   const [timesRan, setTimesRan] = useState(0);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   useEffect(() => {
     //clearAsyncStorage();

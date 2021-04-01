@@ -36,7 +36,6 @@ const Workout = (props) => {
       <Card
         style={[styles.container, {backgroundColor: props.info.completed ? LightModeColors.CompletedBackground : LightModeColors.CardBackground}]}
         elevation={4}
-        //onPress={() => props.onPress()}
         onPress={props.info.workout_type != "Rest" && toggleDetailsVisible}
       >
         <Card.Title 
