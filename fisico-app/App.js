@@ -97,20 +97,7 @@ const App = () => {
                 drawerStyle={{ 
                   backgroundColor: LightModeColors.MenuBackground,
 
-<<<<<<< HEAD
-              }}
-              drawerContentOptions={{
-                activeTintColor: LightModeColors.MenuForegroundFocused,
-                inactiveTintColor: LightModeColors.MenuForeground,
-              }}
-            >
-              {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
-              <Drawer.Screen name="Account" component={Account} />
-            </Drawer.Navigator>
-          </NavigationContainer>
-        </SafeAreaView>
-      </View>
-=======
+
                 }}
                 drawerContentOptions={{
                   activeTintColor: LightModeColors.MenuForegroundFocused,
@@ -125,7 +112,6 @@ const App = () => {
           </SafeAreaView>
         </View>
       </SafeAreaProvider>
->>>>>>> 0b1b261cbd11452480c73d40e7c1b082323182de
     </AppDataContext.Provider>
   );
 
