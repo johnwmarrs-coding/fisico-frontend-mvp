@@ -19,19 +19,43 @@ const HomeScreen = ( {navigation}) => {
 
   useEffect(() => {
     //clearAsyncStorage();
-    prepareWorkouts();
+    sendWorkoutsRequest();
   }, [appDataContext.trigger]);
 
-  const prepareWorkouts = async () => {
-    console.log('Times Ran: ' + timesRan);
-    setTimesRan(timesRan + 1);
+  const sendWorkoutsRequest = async () => {
     try {
-      const workout_arr = await FetchWorkoutArray();
-      setWorkouts(workout_arr);
+      let response = await fetch(FISICO_URL + '/workout/get', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'user_id': appDataContext.userID,
+          'past': 'true',
+          'sync': false,
+          'completed': true,
+          'days': 10,
+        })
+      });
+      let json = await response.json();
+      if (json.success) {
+        console.log('SUCCESS');
+        console.log('MESSAGE: ' + json.msg);
+        console.log(JSON.stringify(json));
+        setWorkouts(json.workout);
+      }else {
+        console.log("FAILURE");
+        console.log(JSON.stringify(json));
+        setLoginFailed(true);
+      }
+      
     } catch (error) {
       console.error(error);
-    } 
+      setLoginFailed(true);
+    }
   };
+
 
   const clearAsyncStorage = async () => {
     await AsyncStorage.clear();

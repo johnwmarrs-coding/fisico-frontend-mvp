@@ -9,14 +9,19 @@ import  AppDataContext  from '../../../../contexts/appDataContext';
 import {WorkoutTypes, WorkoutFields, LiftFields, DistanceFields, CommonLifts, DetailTypes, DistanceUnits, WeightUnits} from '../../../../utils/workoutTypes';
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 import {FISICO_URL} from '../../../../utils/urls';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const LogWorkoutScreen = ( {navigation}, props) => {
+const PlanWorkoutScreen = ( {navigation}, props) => {
   const appDataContext = useContext(AppDataContext);
 
   const [workoutType, setWorkoutType] = useState('Distance');
   const [workoutName, setWorkoutName] = useState('');
   const [workoutDescription, setWorkoutDescription] = useState('');
+
   const [workoutDate, setWorkoutDate] = useState('');
+  const [workoutTime, setWorkoutTime] = useState('');
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+
 
   const [workoutResults, setWorkoutResults] = useState([]);
   const [workoutDetailType, setWorkoutDetailType] = useState('Distance');
@@ -78,6 +83,18 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                     onChangeText={text => setWorkoutDescription(text)}
                     value={workoutDescription}
                     style={styles.field}
+                />
+                <TextInput
+                    placeholder='date'
+                    onFocus={() => setIsDatePickerVisible(true)}
+                    value={workoutDate == '' ? '' : workoutDate.toString()}
+                    style={styles.field}
+                />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode='datetime'
+                    onConfirm={(date) => {setWorkoutDate(date); setIsDatePickerVisible(false);}}
+                    onCancel={() => setIsDatePickerVisible(false)}
                 />
                 <Picker 
                     selectedValue={workoutType}
@@ -254,11 +271,11 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                                 name: workoutName,
                                 description: workoutDescription,
                                 workout_type: workoutType,
-                                date: Date(),
+                                date: workoutDate,
                                 start_time: null,
-                                completed: true,
-                                plan: [],
-                                results: workoutResults,
+                                completed: false,
+                                plan: workoutResults,
+                                results: [],
                                 user_id: appDataContext.userID,
 
                             }
@@ -354,4 +371,4 @@ const LogWorkoutScreen = ( {navigation}, props) => {
     }
   };
 
-export default LogWorkoutScreen;
+export default PlanWorkoutScreen;

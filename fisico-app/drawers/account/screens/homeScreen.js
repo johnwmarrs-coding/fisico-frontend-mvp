@@ -43,6 +43,7 @@ const HomeScreen = ( {navigation} ) => {
         appDataContext.setDisplayName(null);
         appDataContext.setLoggedIn(false);
         appDataContext.setAuthToken(null);
+        appDataContext.storeUserInfo('', '');
     }
   }
 

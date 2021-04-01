@@ -42,11 +42,13 @@ const SignupScreen = ( {navigation} ) => {
         console.log('SUCCESS');
         console.log('MESSAGE: ' + json.msg);
         console.log('TOKEN: ' + json.token_hash);
+        console.log('user_id: ' + json.user_id);
         console.log(JSON.stringify(json));
         appDataContext.setEmail(emailText);
-        appDataContext.setDisplayName(displayNameText);
         appDataContext.setLoggedIn(true);
-        appDataContext.setAuthToken(json.token_hash);
+        appDataContext.setAuthToken(json.data.token_hash);
+        appDataContext.setUserID(json.data.user_id);
+        appDataContext.storeUserInfo(appDataContext.authToken, appDataContext.userID);
       }else {
         console.log("FAILURE");
         console.log(JSON.stringify(json));
