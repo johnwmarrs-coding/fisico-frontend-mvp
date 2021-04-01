@@ -103,7 +103,6 @@ const App = () => {
               }}
             >
               {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
-              {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
               <Drawer.Screen name="Account" component={Account} />
             </Drawer.Navigator>
           </NavigationContainer>
@@ -111,6 +110,8 @@ const App = () => {
       </View>
     </AppDataContext.Provider>
   );
+
+  // {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
 }
 
 export default App;

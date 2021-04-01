@@ -63,7 +63,7 @@ const HomeScreen = ( {navigation} ) => {
          Log Out
       </Button>
       <Button
-        mode="contained"
+        mode="outlined"
         style={styles.button} 
         labelStyle={{color: DarkModeColors.Warning}}
         onPress={clearLocalData}>
