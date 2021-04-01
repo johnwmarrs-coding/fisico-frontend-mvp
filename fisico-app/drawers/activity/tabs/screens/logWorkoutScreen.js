@@ -63,7 +63,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
   }
 
   return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
           {entryState == 0 ?
             <View>
                 <Text style={styles.label}>Workout Overview</Text>
@@ -296,7 +296,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
         </View>
         : null
         }
-      </View>
+      </ScrollView>
   )
 
     
@@ -308,7 +308,6 @@ const LogWorkoutScreen = ( {navigation}, props) => {
       flex: 1,
       padding: 24,
       backgroundColor: LightModeColors.ContentBackground,
-      justifyContent: 'flex-start',
     },
     label: {
       color: LightModeColors.ContentForeground,
@@ -351,6 +350,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
         justifyContent: 'space-around',
         margin: 5,
         padding: 5,
+        paddingBottom: 20,
     }
   };
 

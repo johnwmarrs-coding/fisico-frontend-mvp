@@ -45,7 +45,7 @@ const App = () => {
       const id = await AsyncStorage.getItem('@user_id');
       console.log('ID: ' + id);
       console.log('Token: ' + token);
-      if (id != 'none' && token != 'none') {
+      if (id != 'none' && token != 'none' && id != '' && token != '' && id != null && token != null) {
         setUserID(id);
         setAuthToken(token);
         setLoggedIn(true);
@@ -88,7 +88,7 @@ const App = () => {
 
   return (
     <AppDataContext.Provider value={appData}>
-      <SafeAreaProvider style={styles.container}>
+      <View style={styles.container}>
         <SafeAreaView style={ styles.container }>
           <NavigationContainer>
             <Drawer.Navigator 
@@ -108,7 +108,7 @@ const App = () => {
             </Drawer.Navigator>
           </NavigationContainer>
         </SafeAreaView>
-      </SafeAreaProvider>
+      </View>
     </AppDataContext.Provider>
   );
 }

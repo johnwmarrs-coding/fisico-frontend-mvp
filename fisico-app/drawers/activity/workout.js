@@ -26,6 +26,7 @@ const Workout = (props) => {
   <Avatar.Icon
     color={LightModeColors.CardForeground}
     style={styles.icon}
+    style={[styles.icon, {backgroundColor: props.info.completed ? LightModeColors.CompletedBackground : LightModeColors.CardBackground}]}
     {...iconProps}
     icon={workoutIcon}
     size={70}
@@ -33,10 +34,10 @@ const Workout = (props) => {
 
   return (
       <Card
-        style={styles.container}
+        style={[styles.container, {backgroundColor: props.info.completed ? LightModeColors.CompletedBackground : LightModeColors.CardBackground}]}
         elevation={4}
         //onPress={() => props.onPress()}
-        onPress={toggleDetailsVisible}
+        onPress={props.info.workout_type != "Rest" && toggleDetailsVisible}
       >
         <Card.Title 
           titleStyle={styles.title}
