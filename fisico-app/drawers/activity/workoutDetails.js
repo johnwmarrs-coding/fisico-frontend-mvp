@@ -2,11 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LightModeColors, DarkModeColors } from '../../styles/colors';
-
 import { DataTable } from 'react-native-paper';
 
 const WorkoutDetails = (props) => {
   const [page, setPage] = useState(0);
+  const [numberOfPages, setNumberOfPages] = useState(-1);
+
+  useEffect(() => {
+  const planExists = props.workoutObject.plan.length != 0;
+  const resultExists = props.workoutObject.completed;
+    if (planExists && !resultExists) {
+      setNumberOfPages(1)
+      setPage(0);
+    }
+    else if (planExists && resultExists) {
+      setNumberOfPages(2);
+      setPage(0);
+    }
+    else if (!planExists && resultExists) {
+      setNumberOfPages(1);
+      setPage(1);
+    }
+  }, [])
 
   const entries = () => {
     return (
@@ -146,11 +163,8 @@ const WorkoutDetails = (props) => {
 
       <DataTable.Pagination
         page={page}
-        numberOfPages={props.workoutObject.completed ? 2 : 1}
-        onPageChange={page => {
-          setPage(page);
-          console.log(page);
-        }}
+        numberOfPages={numberOfPages}
+        onPageChange={page => setPage(page)}
         label={
           <Text style={styles.text}>
             {page == 0 ? "Plan" : "Results"}

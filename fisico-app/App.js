@@ -88,27 +88,29 @@ const App = () => {
 
   return (
     <AppDataContext.Provider value={appData}>
-      <View style={styles.container}>
-        <SafeAreaView style={ styles.container }>
-          <NavigationContainer>
-            <Drawer.Navigator 
-              initialRouteName={loggedIn ? 'Activity' : 'Account'}
-              drawerStyle={{ 
-                backgroundColor: LightModeColors.MenuBackground,
+      <SafeAreaProvider style={styles.container}>
+        <View style={styles.container}>
+          <SafeAreaView style={ styles.container }>
+            <NavigationContainer>
+              <Drawer.Navigator 
+                initialRouteName={loggedIn ? 'Activity' : 'Account'}
+                drawerStyle={{ 
+                  backgroundColor: LightModeColors.MenuBackground,
 
-              }}
-              drawerContentOptions={{
-                activeTintColor: LightModeColors.MenuForegroundFocused,
-                inactiveTintColor: LightModeColors.MenuForeground,
-              }}
-            >
-              {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
-              {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
-              <Drawer.Screen name="Account" component={Account} />
-            </Drawer.Navigator>
-          </NavigationContainer>
-        </SafeAreaView>
-      </View>
+                }}
+                drawerContentOptions={{
+                  activeTintColor: LightModeColors.MenuForegroundFocused,
+                  inactiveTintColor: LightModeColors.MenuForeground,
+                }}
+              >
+                {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
+                {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
+                <Drawer.Screen name="Account" component={Account} />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </SafeAreaView>
+        </View>
+      </SafeAreaProvider>
     </AppDataContext.Provider>
   );
 }
