@@ -5,29 +5,37 @@ import { LightModeColors, DarkModeColors } from '../../styles/colors';
 import { DataTable } from 'react-native-paper';
 
 const WorkoutDetails = (props) => {
-  const [page, setPage] = useState(0);
-  const [numberOfPages, setNumberOfPages] = useState(-1);
+  const [page, setPage] = useState(0);  
+  const [entries, setEntries] = useState([]);
+  const planExists = props.workoutObject.plan.length > 0;
+  const resultExists = props.workoutObject.results.length > 0;
+  const numberOfPages = planExists + resultExists;  // True is 1, False is 0
+
+  const initialPageLabel = () => {
+    if (numberOfPages == 1 && planExists) {
+      // console.log("Plan");
+      return "Plan";
+    }
+    else if (numberOfPages == 1 && resultExists) {
+      // console.log("Result");
+      return "Result";
+    }
+    else if (numberOfPages == 2) {
+      // page == 0 ?
+      //   console.log("Plan")
+      //   :
+      //   console.log("Result");
+      return page == 0 ?
+        "Plan"
+        :
+        "Result";
+    }
+  }
+  const [pageLabel, setPageLabel] = useState(initialPageLabel);
 
   useEffect(() => {
-  const planExists = props.workoutObject.plan.length != 0;
-  const resultExists = props.workoutObject.completed;
-    if (planExists && !resultExists) {
-      setNumberOfPages(1)
-      setPage(0);
-    }
-    else if (planExists && resultExists) {
-      setNumberOfPages(2);
-      setPage(0);
-    }
-    else if (!planExists && resultExists) {
-      setNumberOfPages(1);
-      setPage(1);
-    }
-  }, [])
-
-  const entries = () => {
-    return (
-      page == 0 ? 
+    setEntries(
+      pageLabel == "Plan" ?
         props.workoutObject.plan.map((plan, index) => (
           <DataTable.Row key={index}>
             <DataTable.Cell>
@@ -109,8 +117,8 @@ const WorkoutDetails = (props) => {
             }
           </DataTable.Row>
         ))
-    )
-  }
+    );
+  }, [page]); 
 
   return (
     <DataTable style={styles.dataTable}>
@@ -159,47 +167,50 @@ const WorkoutDetails = (props) => {
       </DataTable.Header>
 
       {/* Displays either plan or results numbers */}
-      {entries()}
+      {entries}
 
       <DataTable.Pagination
         page={page}
         numberOfPages={numberOfPages}
-        onPageChange={page => setPage(page)}
+        onPageChange={newPage => {
+          setPage(newPage);
+          pageLabel == "Plan" ? setPageLabel("Result") : setPageLabel("Plan");
+        }}
         label={
-          <Text style={styles.text}>
-            {page == 0 ? "Plan" : "Results"}
-          </Text>}
+          <Text style={styles.titleText}>
+            {pageLabel}
+          </Text>
+        }
       />
     </DataTable>
   )
 }
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
-    // Layout
-    dataTable: {
-      backgroundColor: LightModeColors.CardBackgroundLight
-    },
-    // Text
-    pageText: {
-      color:  LightModeColors.CardForeground,
-      fontSize: 17,
-    },
-    titleText: {
-      color:  LightModeColors.CardForeground,
-    },
-    text: {
-      color:  LightModeColors.MenuForeground,
-      textTransform: "capitalize",
-    },
-    lowerCaseText: {
-      color:  LightModeColors.MenuForeground,
-    },
-    focusedText: {
-      color: LightModeColors.MenuForegroundFocused,
-      textTransform: "capitalize",
-    }
-  })
-
+  // Layout
+  dataTable: {
+    backgroundColor: LightModeColors.CardBackgroundLight
+  },
+  // Text
+  pageText: {
+    color:  LightModeColors.CardForeground,
+    fontSize: 17,
+  },
+  titleText: {
+    color:  LightModeColors.CardForeground,
+  },
+  text: {
+    color:  LightModeColors.MenuForeground,
+    textTransform: "capitalize",
+  },
+  lowerCaseText: {
+    color:  LightModeColors.MenuForeground,
+  },
+  focusedText: {
+    color: LightModeColors.MenuForegroundFocused,
+    textTransform: "capitalize",
+  }
+})
 
 export default WorkoutDetails;

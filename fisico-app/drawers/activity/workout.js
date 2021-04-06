@@ -19,6 +19,7 @@ const Workout = (props) => {
   const [workoutIcon, setWorkoutIcon] = useState("");  
   const [detailsVisible, setDetailsVisible] = useState(false);
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible);
+  const hasDetails = props.info.plan.length > 0 || props.info.results.length > 0;
   useEffect(() => {
     setWorkoutIcon(chooseIcon(props.info.workout_type));
   }, []);
@@ -36,7 +37,7 @@ const Workout = (props) => {
       <Card
         style={[styles.container, {backgroundColor: props.info.completed ? LightModeColors.CompletedBackground : LightModeColors.CardBackground}]}
         elevation={4}
-        onPress={props.info.workout_type != "Rest" && toggleDetailsVisible}
+        onPress={hasDetails && toggleDetailsVisible}
       >
         <Card.Title 
           titleStyle={styles.title}
