@@ -57,6 +57,7 @@ const Workout = (props) => {
             </Text>
           ), [])}
           <WorkoutDetails
+            onHomeScreen={true}
             workoutObject={props.info}
           />
         </Card.Content>
@@ -71,7 +72,6 @@ const Workout = (props) => {
       backgroundColor: LightModeColors.CardBackground,
       paddingTop: 5,
       marginVertical: 5
-
     },
     title: {
       color: LightModeColors.CardForeground,

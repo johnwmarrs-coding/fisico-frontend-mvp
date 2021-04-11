@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ScrollView, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Card } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
@@ -9,6 +9,7 @@ import  AppDataContext  from '../../../../contexts/appDataContext';
 import {WorkoutTypes, WorkoutFields, LiftFields, DistanceFields, CommonLifts, DetailTypes, DistanceUnits, WeightUnits} from '../../../../utils/workoutTypes';
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 import {FISICO_URL} from '../../../../utils/urls';
+import WorkoutDetails from '../../workoutDetails';
 
 const LogWorkoutScreen = ( {navigation}, props) => {
   const appDataContext = useContext(AppDataContext);
@@ -113,15 +114,10 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                     >Next</Button>
                 </View>
             </View>
-        
             : null
           }
         {entryState == 1 ?
             <View>
-            {workoutResults.map((item, key) => (
-                <Text key={key}>{JSON.stringify(item)}</Text>
-                )
-            )}
             <Text>Detail Type</Text>
             <Picker 
                 selectedValue={workoutDetailType}
@@ -268,6 +264,18 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                     }
                 >Next</Button>
             </View>
+
+            {/* Details of the log */}
+            <Card style={styles.details} elevation={4}>
+                <WorkoutDetails
+                    onHomeScreen={false}
+                    workoutObject={{
+                        plan: [],
+                        results: workoutResults,
+                        workout_type: workoutType,
+                }}/>
+            </Card>
+
         </View>
         : null
         }
@@ -351,7 +359,10 @@ const LogWorkoutScreen = ( {navigation}, props) => {
         margin: 5,
         padding: 5,
         paddingBottom: 20,
-    }
+    },
+    details: {
+        backgroundColor: LightModeColors.CardBackground,
+    },
   };
 
 export default LogWorkoutScreen;
