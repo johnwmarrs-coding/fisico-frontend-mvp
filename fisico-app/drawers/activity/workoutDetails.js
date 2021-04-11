@@ -6,25 +6,22 @@ import { DataTable } from 'react-native-paper';
 
 const WorkoutDetails = (props) => {
   const [page, setPage] = useState(0);  
+  const [header, setHeader] = useState([]);
   const [entries, setEntries] = useState([]);
+  const [liftExists, setLiftExists] = useState(false);
+  const [distExists, setDistExists] = useState(false);
   const planExists = props.workoutObject.plan.length > 0;
   const resultExists = props.workoutObject.results.length > 0;
   const numberOfPages = planExists + resultExists;  // True is 1, False is 0
 
   const initialPageLabel = () => {
     if (numberOfPages == 1 && planExists) {
-      // console.log("Plan");
       return "Plan";
     }
     else if (numberOfPages == 1 && resultExists) {
-      // console.log("Result");
       return "Result";
     }
     else if (numberOfPages == 2) {
-      // page == 0 ?
-      //   console.log("Plan")
-      //   :
-      //   console.log("Result");
       return page == 0 ?
         "Plan"
         :
@@ -34,183 +31,124 @@ const WorkoutDetails = (props) => {
   const [pageLabel, setPageLabel] = useState(initialPageLabel);
 
   useEffect(() => {
-    if (props.onHomeScreen)
+    setHeader(() => (
+      <DataTable.Header style={styles.rowLayout}>
+        <DataTable.Title>
+            <Text style={styles.titleText}>
+              Name
+            </Text>
+        </DataTable.Title>
+
+        {props.types.includes("Lift") &&
+          <View style={styles.rowLayout}>
+            <DataTable.Title numeric>
+                <Text style={styles.titleText}>
+                  Wt.
+                </Text>
+            </DataTable.Title>
+
+            <DataTable.Title numeric>
+              <Text style={styles.titleText}>
+                Sets
+              </Text>  
+            </DataTable.Title>
+
+            <DataTable.Title numeric>
+              <Text style={styles.titleText}>
+                Reps
+              </Text>  
+            </DataTable.Title>
+          </View>
+        }
+
+        {props.types.includes("Distance") &&
+          <View style={styles.rowLayout}>
+            <DataTable.Title numeric>
+              <Text style={styles.titleText}>
+                Dist.
+              </Text>
+            </DataTable.Title>
+
+            <DataTable.Title numeric>
+              <Text style={styles.titleText}>
+                Duration
+              </Text>  
+            </DataTable.Title>
+          </View>
+        }
+      </DataTable.Header>
+    ));
+
+    if (props.onHomeScreen) { // workout.js
       setEntries(
         pageLabel == "Plan" ?
-          props.workoutObject.plan.map((plan, index) => (
-            <DataTable.Row key={index}>
-              <DataTable.Cell>
-                <Text style={styles.text}>
-                  {plan.name}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                {props.workoutObject.workout_type == "Weight Lifting" &&
-                  <Text style={styles.text}>
-                    {plan.weight}                  
-                  </Text>
-                }
-                {props.workoutObject.workout_type == "Distance" &&
-                  <Text style={styles.text}>
-                    {plan.distance}
-                  </Text>
-                }
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                {props.workoutObject.workout_type == "Weight Lifting" &&
-                  <Text style={styles.text}>
-                    {plan.num_sets}
-                  </Text>
-                }
-                {props.workoutObject.workout_type == "Distance" &&
-                  <Text style={styles.text}>
-                    {plan.duration}
-                  </Text>
-                }
-              </DataTable.Cell>
-              {props.workoutObject.workout_type == "Weight Lifting" &&
-                <DataTable.Cell numeric>
-                  <Text style={styles.text}>
-                    {plan.num_reps}
-                  </Text>
-                </DataTable.Cell>
-              }
-            </DataTable.Row>
-          ))
+          getRows(props.workoutObject.plan)
         :
-          props.workoutObject.results.map((result, index) => (
-            <DataTable.Row key={index}>
-              <DataTable.Cell>
-                <Text style={styles.text}>
-                  {result.name}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                {props.workoutObject.workout_type == "Weight Lifting" &&
-                  <Text style={styles.focusedText}>
-                    {result.weight}                  
-                  </Text>
-                }
-                {props.workoutObject.workout_type == "Distance" &&
-                  <Text style={styles.focusedText}>
-                    {result.distance}
-                  </Text>
-                }
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                {props.workoutObject.workout_type == "Weight Lifting" &&
-                  <Text style={styles.focusedText}>
-                    {result.num_sets}
-                  </Text>
-                }
-                {props.workoutObject.workout_type == "Distance" &&
-                  <Text style={styles.focusedText}>
-                    {result.duration}
-                  </Text>
-                }
-              </DataTable.Cell>
-              {props.workoutObject.workout_type == "Weight Lifting" &&
-                <DataTable.Cell numeric>
-                  <Text style={styles.focusedText}>
-                    {result.num_reps}
-                  </Text>
-                </DataTable.Cell>
-              }
-            </DataTable.Row>
-          ))
+          getRows(props.workoutObject.results)
       );
-    else {
+    }
+    else {  // logHomeScreen.js
       setEntries(
-        props.workoutObject.results.map((result, index) => (
-          <DataTable.Row key={index}>
-            <DataTable.Cell>
-              <Text style={styles.text}>
-                {result.name}
-              </Text>
-            </DataTable.Cell>
-            <DataTable.Cell numeric>
-              {props.workoutObject.workout_type == "Weight Lifting" &&
-                <Text style={styles.focusedText}>
-                  {result.weight}                  
-                </Text>
-              }
-              {props.workoutObject.workout_type == "Distance" &&
-                <Text style={styles.focusedText}>
-                  {result.distance}
-                </Text>
-              }
-            </DataTable.Cell>
-            <DataTable.Cell numeric>
-              {props.workoutObject.workout_type == "Weight Lifting" &&
-                <Text style={styles.focusedText}>
-                  {result.num_sets}
-                </Text>
-              }
-              {props.workoutObject.workout_type == "Distance" &&
-                <Text style={styles.focusedText}>
-                  {result.duration}
-                </Text>
-              }
-            </DataTable.Cell>
-            {props.workoutObject.workout_type == "Weight Lifting" &&
-              <DataTable.Cell numeric>
-                <Text style={styles.focusedText}>
-                  {result.num_reps}
-                </Text>
-              </DataTable.Cell>
-            }
-          </DataTable.Row>
-        ))
+        getRows(props.workoutObject.results)
       );
     }
   }, [props]);
 
+  function getRows(info) {
+    return(
+      info.map((item, index) => (
+        <DataTable.Row key={index}>
+          <DataTable.Cell>
+            <Text style={styles.text}>
+              {item.name}
+            </Text>
+          </DataTable.Cell>
+
+          {item.hasOwnProperty('weight') &&
+            <View style={styles.rowLayout}>
+              <DataTable.Cell numeric>
+                <Text style={styles.focusedText}>
+                  {item.weight} {item.units}
+                </Text>
+              </DataTable.Cell>
+
+              <DataTable.Cell numeric>
+                <Text style={styles.focusedText}>
+                  {item.num_sets}
+                </Text>
+              </DataTable.Cell>
+
+              <DataTable.Cell numeric>
+                <Text style={styles.focusedText}>
+                  {item.num_reps}
+                </Text>
+              </DataTable.Cell>
+            </View>
+          }
+
+          {item.hasOwnProperty('distance') &&
+            <View style={styles.rowLayout}>
+              <DataTable.Cell numeric>
+                <Text style={styles.focusedText}>
+                  {item.distance} {item.units}
+                </Text>
+              </DataTable.Cell>
+
+              <DataTable.Cell numeric>
+                <Text style={styles.focusedText}>
+                  {item.duration}
+                </Text>
+              </DataTable.Cell>
+            </View>
+          }
+        </DataTable.Row>
+      ))
+    )
+  }
+
   return (
     <DataTable>
-      <DataTable.Header>
-        <DataTable.Title>
-          <Text style={styles.titleText}>
-            Name
-          </Text>
-        </DataTable.Title>
-
-        <DataTable.Title numeric>
-          {props.workoutObject.workout_type == "Weight Lifting" &&
-            <Text style={styles.titleText}>
-              {`Wt.`}
-            </Text>
-          }
-          {props.workoutObject.workout_type == "Distance" &&
-            <Text style={styles.titleText}>
-              {`Dist.`}
-            </Text>
-          }
-        </DataTable.Title>
-
-        {props.workoutObject.workout_type == "Weight Lifting" &&
-          <DataTable.Title numeric>
-            <Text style={styles.titleText}>
-              Sets
-            </Text>  
-          </DataTable.Title>
-        }
-        
-        {props.workoutObject.workout_type == "Weight Lifting" ?
-          <DataTable.Title numeric>
-            <Text style={styles.titleText}>
-              Reps
-            </Text>  
-          </DataTable.Title>
-        :
-          <DataTable.Title numeric>
-            <Text style={styles.titleText}>
-              Duration
-            </Text>  
-          </DataTable.Title>
-        }
-        
-      </DataTable.Header>
-
+      {header}
       {/* Displays either plan or results numbers */}
       {entries}
 
@@ -234,6 +172,10 @@ const WorkoutDetails = (props) => {
 }
 
 const styles = StyleSheet.create({
+  rowLayout: {
+    flexDirection: "row",
+    flex: 1
+  },
   // Text
   pageText: {
     color:  LightModeColors.CardForeground,
@@ -251,7 +193,6 @@ const styles = StyleSheet.create({
   },
   focusedText: {
     color: LightModeColors.MenuForegroundFocused,
-    textTransform: "capitalize",
   }
 })
 

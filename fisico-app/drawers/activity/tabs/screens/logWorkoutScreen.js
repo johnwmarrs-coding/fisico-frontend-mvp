@@ -21,6 +21,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
 
   const [workoutResults, setWorkoutResults] = useState([]);
   const [workoutDetailType, setWorkoutDetailType] = useState('Distance');
+  const [usedWorkoutDetailTypes, setUsedWorkoutDetailTypes] = useState([]);
   const [workoutDetailName, setWorkoutDetailName] = useState('');
   const [workoutDetailDistance, setWorkoutDetailDistance] = useState('');
   const [workoutDetailUnits, setWorkoutDetailUnits] = useState('');
@@ -121,7 +122,10 @@ const LogWorkoutScreen = ( {navigation}, props) => {
             <Text>Detail Type</Text>
             <Picker 
                 selectedValue={workoutDetailType}
-                onValueChange={(itemValue, itemIndex) => setWorkoutDetailType(itemValue)}
+                onValueChange={(itemValue, itemIndex) => {
+                    setWorkoutDetailType(itemValue);
+                    setWorkoutDetailUnits(itemValue == 'Distance' ? DistanceUnits[0] : WeightUnits[0]);
+                }}
             >
                 {DetailTypes.map((item, key) => (
                     <Picker.Item key={key} label={item} value={item}/>
@@ -212,10 +216,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                                     units: workoutDetailUnits,
                                     duration: workoutDetailDuration,
                                 }
-                                let tempResults = workoutResults;
-                                tempResults.push(result);
-                                setTempWorkoutResult({});
-                                setWorkoutResults(tempResults);
+                                
                             } else if (workoutDetailType == 'Lift'){
                                 result = {
                                     name: workoutDetailName,
@@ -224,11 +225,15 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                                     num_sets: Number(workoutDetailNumSets),
                                     num_reps: Number(workoutDetailNumReps),
                                 }
-                                let tempResults = workoutResults;
-                                tempResults.push(result);
-                                setTempWorkoutResult({});
-                                setWorkoutResults(tempResults);
                             }
+                            let tempResults = workoutResults;
+                            tempResults.push(result);
+                            setTempWorkoutResult({});
+                            setWorkoutResults(tempResults);
+
+                            let tempTypes = usedWorkoutDetailTypes;
+                            !usedWorkoutDetailTypes.includes(workoutDetailType) && tempTypes.push(workoutDetailType);
+                            setUsedWorkoutDetailTypes(tempTypes);
 
                             if (workoutType == 'Distance'){
                                 setWorkoutDetailType('Distance');
@@ -266,15 +271,18 @@ const LogWorkoutScreen = ( {navigation}, props) => {
             </View>
 
             {/* Details of the log */}
-            <Card style={styles.details} elevation={4}>
-                <WorkoutDetails
-                    onHomeScreen={false}
-                    workoutObject={{
-                        plan: [],
-                        results: workoutResults,
-                        workout_type: workoutType,
-                }}/>
-            </Card>
+            {workoutResults.length > 0 &&
+                <Card style={styles.details} elevation={4}>
+                    <WorkoutDetails
+                        onHomeScreen={false}
+                        types={usedWorkoutDetailTypes}
+                        workoutObject={{
+                            plan: [],
+                            results: workoutResults,
+                            workout_type: workoutType,
+                    }}/>
+                </Card>
+            }
 
         </View>
         : null

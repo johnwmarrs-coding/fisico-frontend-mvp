@@ -18,11 +18,28 @@ const Workout = (props) => {
   // Icon
   const [workoutIcon, setWorkoutIcon] = useState("");  
   const [detailsVisible, setDetailsVisible] = useState(false);
+  const [types, setTypes] = useState([]);
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible);
   const hasDetails = props.info.plan.length > 0 || props.info.results.length > 0;
   useEffect(() => {
     setWorkoutIcon(chooseIcon(props.info.workout_type));
+    var tempTypes = [];
+    props.info.plan.map((item) => {
+      const hasLift = item.hasOwnProperty('weight');
+      const hasDist = item.hasOwnProperty('distance');
+      hasLift && !tempTypes.includes("Lift") && tempTypes.push("Lift");
+      hasDist && !tempTypes.includes("Distance") && tempTypes.push("Distance");
+    })
+    props.info.results.map((item) => {
+      const hasLift = item.hasOwnProperty('weight');
+      const hasDist = item.hasOwnProperty('distance');
+      hasLift && !tempTypes.includes("Lift") && tempTypes.push("Lift");
+      hasDist && !tempTypes.includes("Distance") && tempTypes.push("Distance");
+    })
+
+    setTypes(tempTypes);
   }, []);
+
   const Icon = iconProps =>
   <Avatar.Icon
     color={LightModeColors.CardForeground}
@@ -58,6 +75,7 @@ const Workout = (props) => {
           ), [])}
           <WorkoutDetails
             onHomeScreen={true}
+            types={types}
             workoutObject={props.info}
           />
         </Card.Content>
