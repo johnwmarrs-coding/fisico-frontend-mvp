@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
-import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
-import  AppDataContext  from '../../../../contexts/appDataContext';
-import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls';
+import { LightModeColors, DarkModeColors } from '../../../styles/colors';
+import  AppDataContext  from '../../../contexts/appDataContext';
+import { FISICO_API_URL, FISICO_URL } from '../../../utils/urls';
 
 const HomeScreen = ( {navigation}) => {
   const appDataContext = useContext(AppDataContext);

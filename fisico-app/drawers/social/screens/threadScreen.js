@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
-import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
-import  AppDataContext  from '../../../../contexts/appDataContext';
-import { FISICO_API_URL, FISICO_URL } from '../../../../utils/urls';
+import { LightModeColors, DarkModeColors } from '../../../styles/colors';
+import  AppDataContext  from '../../../contexts/appDataContext';
+import { FISICO_API_URL, FISICO_URL } from '../../../utils/urls';
 
-const FriendsScreen = ( {navigation}) => {
+const ThreadScreen = ( {navigation}) => {
   const appDataContext = useContext(AppDataContext);
 
   return (
     <ScrollView style={styles.container}>
-        <Text>Friends</Text>
+        <Text>Messages</Text>
     </ScrollView>
   )
 }
@@ -24,4 +24,4 @@ const FriendsScreen = ( {navigation}) => {
   })
 
 
-export default FriendsScreen;
+export default ThreadScreen;

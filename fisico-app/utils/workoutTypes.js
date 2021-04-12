@@ -10,6 +10,8 @@ export const DistanceUnits = ['mi', 'km', 'm'];
 export const WeightUnits = ['lbs', 'kg', 'stone', 'pood']
 export const LiftFields = ['name', 'weight', 'units', 'num_sets', 'num_reps'];
 
+export const AnalyticsTypes = ['Total Distance', 'Distance Per Workout', 'Total Weight'];
+
 export const CommonLifts = [
 'Bench Press', 
 'Deadlift', 

@@ -32,10 +32,8 @@ const CalendarScreen = ( {navigation}) => {
         },
         body: JSON.stringify({
           'user_id': appDataContext.userID,
-          'past': 'false',
-          'sync': '',
-          'completed': 'false',
-          'days': -1,
+          'past': false,
+          'days': 7,
         })
       });
       let json = await response.json();

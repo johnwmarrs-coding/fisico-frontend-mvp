@@ -1,44 +1,31 @@
 import React from 'react';
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeTab from './tabs/homeTab';
-import FriendsTab from './tabs/friendsTab';
-import {DarkModeColors, LightModeColors} from '../../styles/colors';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/homeScreen';
+import ThreadScreen from './screens/threadScreen';
+import NewThreadScreen from './screens/newThreadScreen';
+import Header from '../../shared/header';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
-const Tab = createBottomTabNavigator();
-
-const Social = () => {
+const Stack = createStackNavigator();
+const Social = ( {navigation}) => {
   return (
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'home' : 'home-outline';
-            } else if (route.name === 'Friends') {
-              iconName = focused ? 'happy' : 'happy-outline';
-            }
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: LightModeColors.MenuForegroundFocused,
-          inactiveTintColor: LightModeColors.MenuForeground,
-          style: {
-            backgroundColor: LightModeColors.MenuBackground,
-          }
-        }}
-      >
-          <Tab.Screen name="Home" component={HomeTab}/>
-          <Tab.Screen name="Friends" component={FriendsTab}/>
-      </Tab.Navigator>
+    <Stack.Navigator header={Header}>
+      <Stack.Screen name="Social/Home" component={HomeScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Messages"/>
+        }
+      }/>
+      <Stack.Screen name="Social/Thread" component={ThreadScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Conversation"/>
+        }
+      }/>
+      <Stack.Screen name="Social/NewThread" component={NewThreadScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="New Conversation"/>
+        }
+      }/>
+    </Stack.Navigator>
   )
 }
 export default Social;
