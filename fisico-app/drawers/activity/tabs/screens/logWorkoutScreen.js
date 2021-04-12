@@ -274,7 +274,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
             {workoutResults.length > 0 &&
                 <Card style={styles.details} elevation={4}>
                     <WorkoutDetails
-                        onHomeScreen={false}
+                        screen={"logWorkoutScreen"}
                         types={usedWorkoutDetailTypes}
                         workoutObject={{
                             plan: [],
@@ -357,6 +357,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
       marginTop: 5,
       marginBottom: 5,
       width: 120,
+      backgroundColor: LightModeColors.MenuBackground
     },
     buttonLabel: {
         color: DarkModeColors.ContentForeground,

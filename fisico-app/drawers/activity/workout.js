@@ -74,7 +74,7 @@ const Workout = (props) => {
             </Text>
           ), [])}
           <WorkoutDetails
-            onHomeScreen={true}
+            screen={"homeScreen"}
             types={types}
             workoutObject={props.info}
           />

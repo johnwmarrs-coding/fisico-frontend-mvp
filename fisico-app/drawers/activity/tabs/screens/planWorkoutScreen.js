@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { ScrollView, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Card } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { LightModeColors, DarkModeColors } from '../../../../styles/colors';
 import Workout from '../../workout';
@@ -10,6 +10,7 @@ import {WorkoutTypes, WorkoutFields, LiftFields, DistanceFields, CommonLifts, De
 import { FetchWorkoutArray, SaveWorkout } from '../../../../utils/workoutStorage';
 import {FISICO_URL} from '../../../../utils/urls';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import WorkoutDetails from "../../workoutDetails";
 
 const PlanWorkoutScreen = ( {navigation}, props) => {
   const appDataContext = useContext(AppDataContext);
@@ -25,6 +26,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
 
   const [workoutResults, setWorkoutResults] = useState([]);
   const [workoutDetailType, setWorkoutDetailType] = useState('Distance');
+  const [usedWorkoutDetailTypes, setUsedWorkoutDetailTypes] = useState([]);
   const [workoutDetailName, setWorkoutDetailName] = useState('');
   const [workoutDetailDistance, setWorkoutDetailDistance] = useState('');
   const [workoutDetailUnits, setWorkoutDetailUnits] = useState('');
@@ -135,14 +137,13 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
           }
         {entryState == 1 ?
             <View>
-            {workoutResults.map((item, key) => (
-                <Text key={key}>{JSON.stringify(item)}</Text>
-                )
-            )}
             <Text>Detail Type</Text>
             <Picker 
                 selectedValue={workoutDetailType}
-                onValueChange={(itemValue, itemIndex) => setWorkoutDetailType(itemValue)}
+                onValueChange={(itemValue, itemIndex) => {
+                    setWorkoutDetailType(itemValue);
+                    setWorkoutDetailUnits(itemValue == 'Distance' ? DistanceUnits[0] : WeightUnits[0]);
+                }}
             >
                 {DetailTypes.map((item, key) => (
                     <Picker.Item key={key} label={item} value={item}/>
@@ -250,6 +251,9 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                                 setTempWorkoutResult({});
                                 setWorkoutResults(tempResults);
                             }
+                            let tempTypes = usedWorkoutDetailTypes;
+                            !usedWorkoutDetailTypes.includes(workoutDetailType) && tempTypes.push(workoutDetailType);
+                            setUsedWorkoutDetailTypes(tempTypes);
 
                             if (workoutType == 'Distance'){
                                 setWorkoutDetailType('Distance');
@@ -285,6 +289,20 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                     }
                 >Next</Button>
             </View>
+
+            {/* Details of the log */}
+            {workoutResults.length > 0 &&
+                <Card style={styles.details} elevation={4}>
+                    <WorkoutDetails
+                        screen={"planWorkoutScreen"}
+                        types={usedWorkoutDetailTypes}
+                        workoutObject={{
+                            plan: workoutResults,
+                            results: [],
+                            workout_type: workoutType,
+                    }}/>
+                </Card>
+            }
         </View>
         : null
         }
@@ -368,7 +386,10 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
         margin: 5,
         padding: 5,
         paddingBottom: 20,
-    }
+    },
+    details: {
+        backgroundColor: LightModeColors.CardBackground,
+    },
   };
 
 export default PlanWorkoutScreen;
