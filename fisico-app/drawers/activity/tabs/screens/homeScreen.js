@@ -33,10 +33,8 @@ const HomeScreen = ( {navigation}) => {
         },
         body: JSON.stringify({
           'user_id': appDataContext.userID,
-          'past': 'true',
-          'sync': false,
-          'completed': true,
-          'days': 10,
+          'past': true,
+          'days': 7,
         })
       });
       let json = await response.json();

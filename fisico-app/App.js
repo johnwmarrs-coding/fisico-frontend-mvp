@@ -105,7 +105,8 @@ const App = () => {
                 }}
               >
                 {loggedIn && <Drawer.Screen name="Activity" component={Activity} />}
-                {loggedIn && <Drawer.Screen name="Settings" component={Settings} />}
+                {loggedIn && <Drawer.Screen name="Diet" component={Diet} />}
+                {loggedIn && <Drawer.Screen name="Social" component={Social}/>}
                 <Drawer.Screen name="Account" component={Account} />
               </Drawer.Navigator>
             </NavigationContainer>

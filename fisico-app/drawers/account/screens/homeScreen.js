@@ -16,14 +16,15 @@ const HomeScreen = ( {navigation} ) => {
 
   const sendLogoutRequest = async () => {
     try {
-      let response = await fetch(FISICO_URL + '/user/logout', {
+      let response = await fetch(FISICO_URL + '/user/logoff', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          'token_hash': appDataContext.authToken
+          'token_hash': appDataContext.authToken,
+          'user_id': appDataContext.userID
         })
       });
       let json = await response.json();
