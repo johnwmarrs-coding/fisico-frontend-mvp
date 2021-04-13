@@ -1,16 +1,19 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import Header from '../../shared/header';
+import HomeScreen from './screens/homeScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Diet = () => {
+const Stack = createStackNavigator();
+const Diet = ( {navigation}) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <Text>Diet</Text>
-    </View>
+    <Stack.Navigator header={Header}>
+      <Stack.Screen name="Diet/Home" component={HomeScreen} options={
+        {
+          header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Diet"/>
+        }
+      }/>
+    </Stack.Navigator>
   )
 }
 export default Diet;
