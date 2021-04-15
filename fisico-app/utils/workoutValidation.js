@@ -64,3 +64,21 @@ export const parseDuration = (text) => {
     }
     return time;
 };
+
+export const timeToString = (time) => {
+    if (time < 60) {
+        let str = time.toString();
+    }
+    else if (time < 3600) {
+        let x = Math.floor(time / 60);
+        let y = time % 60;
+        let str = x.toString() + ":" + y.toString();
+    }
+    else {
+        let x = Math.floor(time / 3600);
+        let y = Math.floor(time % 3600 / 60);
+        let z = time % 3600 % 60;
+        let str = x.toString() + ":" + y.toString() + ":" + z.toString();
+    }
+    return str;
+}
