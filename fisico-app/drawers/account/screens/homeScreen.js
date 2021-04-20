@@ -58,7 +58,8 @@ const HomeScreen = ( {navigation} ) => {
 
       <Button
         mode="contained"
-        style={styles.button} 
+        style={styles.button}
+        color={LightModeColors.MenuBackground}
         labelStyle={{color: DarkModeColors.ContentForeground}}
         onPress={sendLogoutRequest}>
          Log Out

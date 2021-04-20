@@ -62,7 +62,7 @@ const CalendarScreen = ( {navigation}) => {
     <ScrollView
       style={styles.container}
       >
-      <Button onPress={() => navigation.navigate('PlanWorkoutScreen')} title='Plan Workout'></Button>
+      <Button color={LightModeColors.MenuBackground} onPress={() => navigation.navigate('PlanWorkoutScreen')} title='Plan Workout'></Button>
         {workouts.map((workoutObject, workoutIndex) => {
           if (workoutObject.completed == false) {
             return (

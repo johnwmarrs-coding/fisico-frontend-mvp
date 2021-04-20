@@ -68,7 +68,6 @@ const LogWorkoutScreen = ( {navigation}, props) => {
       <ScrollView style={styles.container}>
           {entryState == 0 ?
             <View>
-                <Text style={styles.label}>Workout Overview</Text>
                 <TextInput
                     placeholder='workout name'
                     onChangeText={text => setWorkoutName(text)}
@@ -95,6 +94,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                         mode='contained'
                         style={styles.button}
                         onPress={navigation.goBack}
+                        color={LightModeColors.MenuBackground}
                     >Cancel</Button>
                     <Button
                         style={styles.button}
@@ -112,6 +112,7 @@ const LogWorkoutScreen = ( {navigation}, props) => {
                                 setEntryState(entryState + 1); 
                             }
                         }
+                        color={LightModeColors.MenuBackground}
                     >Next</Button>
                 </View>
             </View>

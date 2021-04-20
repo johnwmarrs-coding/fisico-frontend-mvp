@@ -73,7 +73,6 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
       <ScrollView style={styles.container}>
           {entryState == 0 ?
             <View>
-                <Text style={styles.label}>Workout Overview</Text>
                 <TextInput
                     placeholder='workout name'
                     onChangeText={text => setWorkoutName(text)}
@@ -112,6 +111,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                         mode='contained'
                         style={styles.button}
                         onPress={navigation.goBack}
+                        color={LightModeColors.MenuBackground}
                     >Cancel</Button>
                     <Button
                         style={styles.button}
@@ -129,6 +129,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                                 setEntryState(entryState + 1); 
                             }
                         }
+                        color={LightModeColors.MenuBackground}
                     >Next</Button>
                 </View>
             </View>
@@ -221,6 +222,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                     mode='contained'
                     style={styles.button}
                     onPress={() => setEntryState(entryState - 1)}
+                    color={LightModeColors.MenuBackground}
                 >Previous</Button>
                 <Button
                     mode='contained'
@@ -266,6 +268,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                             }
                         }
                     }
+                    color={LightModeColors.MenuBackground}
                 >Add</Button>
                 <Button
                     mode='contained'
@@ -287,6 +290,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                             setEntryState(entryState + 1);
                         }
                     }
+                    color={LightModeColors.MenuBackground}
                 >Next</Button>
             </View>
 
@@ -315,6 +319,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                     mode='contained'
                     style={styles.button}
                     onPress={() => setEntryState(entryState - 1)}
+                    color={LightModeColors.MenuBackground}
                 >Nope</Button>
                 <Button
                     mode='contained'
@@ -326,6 +331,7 @@ const PlanWorkoutScreen = ( {navigation}, props) => {
                         appDataContext.triggerRefresh(new Date());
                         navigation.goBack();
                     }}
+                    color={LightModeColors.MenuBackground}
                 >Yep!</Button>
             </View>
         </View>
