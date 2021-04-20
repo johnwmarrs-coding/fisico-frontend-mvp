@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/homeScreen';
-import ThreadScreen from './screens/threadScreen';
+import GroupScreen from './screens/groupScreen';
 import NewThreadScreen from './screens/newThreadScreen';
 import Header from '../../shared/header';
 
@@ -15,7 +15,7 @@ const Social = ( {navigation}) => {
           header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Messages"/>
         }
       }/>
-      <Stack.Screen name="Social/Thread" component={ThreadScreen} options={
+      <Stack.Screen name="Social/Group" component={GroupScreen} options={
         {
           header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Conversation"/>
         }
