@@ -45,7 +45,7 @@ const GroupPreview = (props) => {
   const styles = StyleSheet.create({
     opacity: {
       padding: 10,
-      margin: 0,
+      marginVertical: 5,
       backgroundColor: LightModeColors.ContentBackground,
       height: 80,
       width: '100%',

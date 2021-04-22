@@ -48,7 +48,7 @@ const SignupScreen = ( {navigation} ) => {
         appDataContext.setLoggedIn(true);
         appDataContext.setAuthToken(json.data.token_hash);
         appDataContext.setUserID(json.data.user_id);
-        appDataContext.storeUserInfo(appDataContext.authToken, appDataContext.userID);
+        appDataContext.storeUserInfo(appDataContext.authToken, appDataContext.userID, emailText);
       }else {
         console.log("FAILURE");
         console.log(JSON.stringify(json));

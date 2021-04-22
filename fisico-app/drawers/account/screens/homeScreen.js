@@ -45,7 +45,7 @@ const HomeScreen = ( {navigation} ) => {
         appDataContext.setLoggedIn(false);
         appDataContext.setAuthToken(null);
         appDataContext.setSocket(null);
-        appDataContext.storeUserInfo('', '');
+        appDataContext.storeUserInfo('', '', '');
     }
   }
 
@@ -57,19 +57,13 @@ const HomeScreen = ( {navigation} ) => {
   return (
     <View style={styles.container }>
 
-      <Button
-        mode="contained"
-        style={styles.button} 
-        labelStyle={{color: DarkModeColors.ContentForeground}}
-        onPress={sendLogoutRequest}>
-         Log Out
-      </Button>
+      <Text style={styles.label}>{appDataContext.email}</Text>
       <Button
         mode="outlined"
         style={styles.button} 
         labelStyle={{color: DarkModeColors.Warning}}
-        onPress={clearLocalData}>
-         Clear Data
+        onPress={sendLogoutRequest}>
+         Log Out
       </Button>
     </View>
   )
@@ -84,7 +78,7 @@ const HomeScreen = ( {navigation} ) => {
     },
     label: {
       color: LightModeColors.ContentForeground,
-      fontSize: 32,
+      fontSize: 20,
       fontWeight: "bold",
       textAlign: 'center',
       marginTop: 5,

@@ -43,7 +43,9 @@ const SigninScreen = ( {navigation} ) => {
         appDataContext.setAuthToken(json.data.token_hash);
         appDataContext.setUserID(json.data.user_id);
         console.log('Attempting Save!');
-        appDataContext.storeUserInfo(json.data.token_hash, json.data.user_id);
+        appDataContext.storeUserInfo(json.data.token_hash, json.data.user_id, emailText);
+        appDataContext.setInitialLoad(true);
+
       }else {
         console.log("FAILURE");
         console.log(JSON.stringify(json));

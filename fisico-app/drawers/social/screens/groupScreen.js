@@ -16,7 +16,7 @@ const GroupScreen = ( {route, navigation}) => {
   const sendPostMessage = async () => {
     if (newMessage != '') {
       try {
-        let response = await fetch('http://localhost:3001/messages', {
+        let response = await fetch(FISICO_URL + '/messages', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -32,6 +32,7 @@ const GroupScreen = ( {route, navigation}) => {
       console.log('JSON: ' + JSON.stringify(json));
       if (json.success == true) {
         console.log('Message Sent');
+        setNewMessage('');
       }else {
         console.log('Message failed to send');
       }
@@ -53,7 +54,7 @@ const GroupScreen = ( {route, navigation}) => {
           )}
       </ScrollView>
       <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', margin: 5, alignSelf: 'flex-end', height:50}}>
-        <TextInput style={styles.field} multiline={true} onChangeText={(text) => setNewMessage(text)} defaultValue={newMessage}/>
+        <TextInput style={styles.field} multiline={true} value={newMessage} onChangeText={(text) => setNewMessage(text)} defaultValue={newMessage}/>
         <Button style={styles.button} mode='contained' onPress={sendPostMessage}>Send</Button>
       </View>
     </View>
@@ -74,6 +75,8 @@ const GroupScreen = ( {route, navigation}) => {
     },
     field: {
       padding: 5,
+      marginLeft: 10,
+      marginRight: 2,
       backgroundColor: LightModeColors.FieldBackground,
       color: LightModeColors.FieldForeground,
       borderColor: LightModeColors.FieldBorder,

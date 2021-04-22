@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/homeScreen';
 import GroupScreen from './screens/groupScreen';
-import NewThreadScreen from './screens/newThreadScreen';
+import NewGroupScreen from './screens/newGroupScreen';
 import Header from '../../shared/header';
 
 const Stack = createStackNavigator();
@@ -20,7 +20,7 @@ const Social = ( {navigation}) => {
           header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="Conversation"/>
         }
       }/>
-      <Stack.Screen name="Social/NewThread" component={NewThreadScreen} options={
+      <Stack.Screen name="Social/NewGroup" component={NewGroupScreen} options={
         {
           header:  () => <Header toggleDrawer={navigation.toggleDrawer} openSignin={() => navigation.navigate('Account')} title="New Conversation"/>
         }

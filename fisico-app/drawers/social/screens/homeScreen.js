@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { ScrollView, View, StyleSheet, Text , Button} from 'react-native';
+import { ScrollView, View, StyleSheet, Text} from 'react-native';
+import {Button} from 'react-native-paper';
 import { LightModeColors, DarkModeColors } from '../../../styles/colors';
 import  AppDataContext  from '../../../contexts/appDataContext';
 import { FISICO_API_URL, FISICO_URL } from '../../../utils/urls';
@@ -17,6 +18,7 @@ const HomeScreen = ( {navigation}) => {
 
   return (
     <ScrollView style={styles.container} listener={appDataContext.groups}>
+      <Button mode='contained' onPress={() => navigation.navigate('Social/NewGroup')}>New Group</Button>
         {appDataContext.groups.map((groupObject, groupKey) => (
           <GroupPreview 
             key={groupKey}

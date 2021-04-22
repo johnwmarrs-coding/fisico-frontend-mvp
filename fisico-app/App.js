@@ -13,6 +13,7 @@ import  Settings  from './drawers/settings/settingsDrawer';
 import AppDataContext from './contexts/appDataContext';
 import {DarkModeColors, LightModeColors} from './styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FISICO_URL} from './utils/urls';
 import io from 'socket.io-client';
 
 const Drawer = createDrawerNavigator();
@@ -26,13 +27,14 @@ const styles = StyleSheet.create(
 const App = () => {
 
   // State and Objects supporting AppDataContext
-  const storeUserInfo = async(token, id) => {
+  const storeUserInfo = async(token, id, em) => {
     try {
       console.log('Saving...');
       console.log(token);
       console.log(id);
       await AsyncStorage.setItem('@token', token);
       await AsyncStorage.setItem('@user_id', id);
+      await AsyncStorage.setItem('@email', em)
 
     } catch(e) {
       console.error(e);
@@ -44,12 +46,15 @@ const App = () => {
       console.log('Loading...');
       const token = await AsyncStorage.getItem('@token');
       const id = await AsyncStorage.getItem('@user_id');
+      const em = await AsyncStorage.getItem('@email');
       console.log('ID: ' + id);
       console.log('Token: ' + token);
-      if (id != 'none' && token != 'none' && id != '' && token != '' && id != null && token != null) {
+      console.log('Email: ' + em);
+      if (id != 'none' && token != 'none' && id != '' && token != '' && id != null && token != null && em != null && em != '') {
         setUserID(id);
         setAuthToken(token);
         setLoggedIn(true);
+        setEmail(em);
         triggerRefresh(new Date());
       }
     } catch(e) {
@@ -60,7 +65,7 @@ const App = () => {
   const loadGroupsAndMessages = async() => {
     try {
       console.log('Attempting to fetch groups + Messages...')
-      let response = await fetch('http://localhost:3001/messages/all', {
+      let response = await fetch(FISICO_URL + '/messages/all', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -88,7 +93,7 @@ const App = () => {
   const establishSocketConnection = () => {
     if (loggedIn) {
       console.log('Attempting to establish socket connection...');
-      let temp_socket = io('http://127.0.0.1:3001');
+      let temp_socket = io(FISICO_URL);
       temp_socket.on('connection', msg => {
         temp_socket.emit('introduction', {username: email, token: authToken})
       })
@@ -166,6 +171,9 @@ const App = () => {
     setSocket: setSocket,
     groups: groups,
     setGroups: setGroups,
+    loadGroupsAndMessages: loadGroupsAndMessages,
+    initialLoad: initialLoad,
+    setInitialLoad: setInitialLoad,
   }
 
   // Loads startup user info for mobile users
@@ -181,7 +189,7 @@ const App = () => {
       //establishSocketConnection();
       //handleSocketConnectionAndLoadGroups();
     }
-  }, [loggedIn])
+  }, [email, initialLoad])
 
   useEffect(() => {
     if (loggedIn) {
