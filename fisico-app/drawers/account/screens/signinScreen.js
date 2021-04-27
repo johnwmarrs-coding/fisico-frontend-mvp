@@ -33,18 +33,25 @@ const SigninScreen = ( {navigation} ) => {
       });
       let json = await response.json();
       if (json.success) {
+        /*
         console.log('SUCCESS');
-        console.log('MESSAGE: ' + json.msg);
         console.log('TOKEN: ' + json.data.token_hash);
         console.log('user_id: ' + json.data.user_id);
+        */
+
+        let tok = json.data.token_hash;
+        let user_id = json.data.user_id;
+
+        console.log('MESSAGE: ' + json.msg);
+
         console.log(JSON.stringify(json));
         appDataContext.setEmail(emailText);
         appDataContext.setLoggedIn(true);
         appDataContext.setAuthToken(json.data.token_hash);
         appDataContext.setUserID(json.data.user_id);
-        console.log('Attempting Save!');
-        appDataContext.storeUserInfo(json.data.token_hash, json.data.user_id, emailText);
-        appDataContext.setInitialLoad(true);
+        await appDataContext.storeUserInfo(tok, user_id, emailText);
+        await appDataContext.setInitialLoad(true);
+        await appDataContext.triggerRefresh(new Date());
 
       }else {
         console.log("FAILURE");
