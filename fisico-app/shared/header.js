@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
         color: LightModeColors.MenuForeground,
         letterSpacing: 1,
         textAlign: 'center',
