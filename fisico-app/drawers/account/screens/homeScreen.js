@@ -57,11 +57,14 @@ const HomeScreen = ( {navigation} ) => {
   return (
     <View style={styles.container }>
 
+
       <Text style={styles.label}>{appDataContext.email}</Text>
+
       <Button
-        mode="outlined"
-        style={styles.button} 
-        labelStyle={{color: DarkModeColors.Warning}}
+        mode="contained"
+        style={styles.button}
+        color={LightModeColors.MenuBackground}
+        labelStyle={{color: DarkModeColors.ContentForeground}}
         onPress={sendLogoutRequest}>
          Log Out
       </Button>

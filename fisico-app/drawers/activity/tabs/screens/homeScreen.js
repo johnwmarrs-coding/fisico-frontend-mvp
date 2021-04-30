@@ -70,7 +70,7 @@ const HomeScreen = ( {navigation}) => {
     <ScrollView
       style={styles.container}
       >
-      <Button onPress={() => navigation.navigate('LogWorkoutScreen')} title='New'></Button>
+      <Button color={LightModeColors.MenuBackground} onPress={() => navigation.navigate('LogWorkoutScreen')} title='Log Workout'></Button>
         {workouts.map((workoutObject, workoutIndex) => (
         <View key={workoutIndex}>
           <Workout info={workoutObject} onPress={() => setShownModal(workoutIndex)}/>

@@ -234,7 +234,7 @@ const AnalyticsScreen = () => {
         )}
       </Picker>
 
-      <Button mode='contained' style={styles.button} onPress={sendAnalyticsRequest}>Go</Button>
+      <Button color={LightModeColors.MenuBackground} mode='contained' style={styles.button} onPress={sendAnalyticsRequest}>Go</Button>
 
       { chartData != null && data != null && chartData.data.length > 1 && (analyticsType == 'Total Distance' || analyticsType == 'Distance Per Workout')?
       <Chart
